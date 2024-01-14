@@ -7,6 +7,8 @@ const { MONGO_URL, MONGO_DB_NAME } = process.env;
 const configDB = { dbName: MONGO_DB_NAME };
 
 try {
+  console.log(MONGO_URL);
+  console.log(configDB);
   await mongoose.connect(MONGO_URL, configDB);
   console.log('Successfully connected to DB');
 } catch (e) {
