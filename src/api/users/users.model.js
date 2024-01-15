@@ -3,27 +3,31 @@ import { Schema, model } from 'mongoose';
 const usersSchema = new Schema({
   firstName: {
     type: String,
+    required: true,
   },
   lastName: {
     type: String,
+    required: true,
   },
-  secondSurname: {
-    type: String,
+  isAdmin: {
+    type: Boolean,
   },
-  licenceNumber: {
-    type: String,
-  },
-  role: {
-    type: String,
-    default: 'staff',
-  },
-  username: {
+  email: {
     type: String,
     required: true,
   },
   password: {
     type: String,
     required: true,
+  },
+  validated: {
+    type: Boolean,
+  },
+  credit: {
+    type: Number,
+  },
+  points: {
+    type: Number,
   },
 });
 
