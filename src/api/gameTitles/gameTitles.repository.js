@@ -1,8 +1,8 @@
 import gameTitleModel from './gameTitles.model.js';
 
 async function getById({ id }) {
-  const user = await gameTitleModel.findById(id).lean();
-  return user;
+  const gameTitle = await gameTitleModel.findById(id).lean();
+  return gameTitle;
 }
 
 export {
