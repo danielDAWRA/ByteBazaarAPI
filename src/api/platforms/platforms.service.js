@@ -1,7 +1,7 @@
 import * as platformsRepository from './platforms.repository.js';
 
-async function getById({ _id: id }) {
-  const platform = await platformsRepository.getById({ _id: id });
+async function getById({ id }) {
+  const platform = await platformsRepository.getById({ id });
   return platform;
 }
 

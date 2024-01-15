@@ -1,7 +1,7 @@
 import platformModel from './platforms.model.js';
 
-async function getById({ _id: id }) {
-  const platform = await platformModel.find({ _id: id }).lean();
+async function getById({ id }) {
+  const platform = await platformModel.findById(id).lean();
   return platform;
 }
 
