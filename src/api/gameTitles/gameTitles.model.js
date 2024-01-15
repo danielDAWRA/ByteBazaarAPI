@@ -13,4 +13,5 @@ const gameTitlesSchema = new Schema({
 });
 
 const gameTitleModel = model('GameTitle', gameTitlesSchema);
+
 export default gameTitleModel;

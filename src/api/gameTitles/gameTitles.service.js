@@ -1,4 +1,4 @@
-import gameTitlesRepository from './gameTitles.repository.js';
+import * as gameTitlesRepository from './gameTitles.repository.js';
 
 async function getById({ id }) {
   const gameTitles = await gameTitlesRepository.getById({ id });
