@@ -1,8 +1,8 @@
 import Router from 'express';
 
 import authRouter from './auth/auth.router.js';
-import platformsRouter from './platforms/.platforms.router.js';
-import productsRouter from './products/.products.router.js';
+import platformsRouter from './platforms/platforms.router.js';
+import productsRouter from './products/products.router.js';
 
 const router = Router();
 
