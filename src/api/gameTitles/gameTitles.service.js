@@ -5,7 +5,12 @@ async function getById({ id }) {
   return gameTitles;
 }
 
+async function getAllTitles() {
+  const gameTitles = await gameTitlesRepository.getAllTitles();
+  return gameTitles;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getAllTitles,
 };

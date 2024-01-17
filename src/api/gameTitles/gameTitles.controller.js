@@ -6,7 +6,12 @@ async function getById(req, res) {
   res.json(gameTitles);
 }
 
+async function getAllTitles(req, res) {
+  const gameTitles = await gameTitlesService.getAllTitles();
+  res.json(gameTitles);
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getAllTitles,
 };
