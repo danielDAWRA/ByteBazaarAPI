@@ -2,11 +2,11 @@ import * as authService from './auth.service.js';
 // import transporter from '../../../nodemailer.js';
 
 async function register(req, res) {
-  const { username, password, repeatedPassword } = req.body;
+  const { email, password, repeatedPassword } = req.body;
   // the following code will need to be strengthened with a RegEx in testing.
-  if (!username.includes('@') || !username.includes('.')) {
+  if (!email.includes('@') || !email.includes('.')) {
     res.status(400);
-    res.json({ msg: 'Username must be a valid email address.' });
+    res.json({ msg: 'Please enter a valid email address.' });
     return;
   }
   if (password !== repeatedPassword) {
@@ -14,7 +14,8 @@ async function register(req, res) {
     res.json({ msg: 'Both passwords must match.' });
     return;
   }
-  const emailToken = await authService.register({ username, password });
+  const user = req.body;
+  const emailToken = await authService.register(user);
   // eslint-disable-next-line prefer-template
   const url = 'http://localhost:3000/auth/confirm/' + emailToken;
   await transporter.sendMail({
