@@ -9,7 +9,6 @@ const router = Router();
 
 router.use('/auth', authRouter);
 router.use('/gameTitles', gameTitlesRouter);
-
 router.use('/platforms', platformsRouter);
 router.use('/products', productsRouter);
 
