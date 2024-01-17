@@ -2,7 +2,7 @@ import * as ordersService from './orders.service.js';
 
 async function getOrdersByUserId(req, res) {
   const { userId } = req.params;
-  const orders = ordersService.getOrdersByUserId({ userId });
+  const orders = await ordersService.getOrdersByUserId({ userId });
   res.json(orders);
 }
 

@@ -17,5 +17,5 @@ const ordersSchema = new Schema({
   },
 });
 
-const orderModel = model('Product', ordersSchema);
+const orderModel = model('order', ordersSchema);
 export default orderModel;
