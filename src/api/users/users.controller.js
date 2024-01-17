@@ -7,6 +7,7 @@ async function getById(req, res) {
 }
 
 export {
+
   // eslint-disable-next-line import/prefer-default-export
   getById,
 };
