@@ -14,8 +14,7 @@ async function register(req, res) {
     res.json({ msg: 'Both passwords must match.' });
     return;
   }
-  const user = req.body;
-  const emailToken = await authService.register({ user });
+  const emailToken = await authService.register({ user: req.body });
   // eslint-disable-next-line prefer-template
   const url = 'http://localhost:3000/auth/validate/' + emailToken;
   await transporter.sendMail({

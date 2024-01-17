@@ -16,8 +16,8 @@ function getToken({ userId, timeout }) {
 
 async function register({ user }) {
   const { password } = user;
-  const SALT_OR_ROUNDS_HASH = parseInt(process.env.SALT_OR_ROUNDS_HASH);
-  const hashedPassword = hashSync(password, SALT_OR_ROUNDS_HASH);
+  const intSaltOrRoundsHash = parseInt(process.env.SALT_OR_ROUNDS_HASH);
+  const hashedPassword = hashSync(password, intSaltOrRoundsHash);
   const newUser = user;
   newUser.password = hashedPassword;
   await usersRepository.register({ user: newUser });
