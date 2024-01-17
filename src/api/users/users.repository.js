@@ -5,6 +5,7 @@ async function getById({ id }) {
   return user;
 }
 
-export default {
+export {
+  // eslint-disable-next-line import/prefer-default-export
   getById,
 };
