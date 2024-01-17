@@ -1,5 +1,5 @@
 import * as authService from './auth.service.js';
-// import transporter from '../../../nodemailer.js';
+import transporter from '../nodemailer.js';
 
 async function register(req, res) {
   const { email, password, repeatedPassword } = req.body;
@@ -15,24 +15,24 @@ async function register(req, res) {
     return;
   }
   const user = req.body;
-  const emailToken = await authService.register(user);
+  const emailToken = await authService.register({ user });
   // eslint-disable-next-line prefer-template
-  const url = 'http://localhost:3000/auth/confirm/' + emailToken;
+  const url = 'http://localhost:3000/auth/validate/' + emailToken;
   await transporter.sendMail({
-    to: username,
+    to: email,
     subject: 'Confirm registration',
     html: `<h3>You're almost there!</h3><br><a href=${url}>Click this link to confirm your email address.</a>`,
   });
   res.json({ msg: 'We have just sent you a confirmation email—please check your inbox.' });
 }
 
-async function confirm(req, res) {
+async function validate(req, res) {
   const { emailToken } = req.params;
-  const user = await authService.confirm({ emailToken });
-  res.json({ msg: `${user.username}, your account has been confirmed.` });
+  const user = await authService.validate({ emailToken });
+  res.json({ msg: `${user.firstName}, your account has been confirmed.` });
 }
 
 export {
   register,
-  confirm,
+  validate,
 };
