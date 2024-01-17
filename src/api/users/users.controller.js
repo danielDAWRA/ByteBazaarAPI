@@ -6,6 +6,8 @@ async function getById(req, res) {
   res.json(user);
 }
 
-export default {
+export {
+
+  // eslint-disable-next-line import/prefer-default-export
   getById,
 };
