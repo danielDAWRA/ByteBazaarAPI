@@ -1,10 +1,16 @@
 import * as authService from './auth.service.js';
 import transporter from '../nodemailer.js';
 
+function isValidEmail(email) {
+  // eslint-disable-next-line no-useless-escape
+  const emailRegex = /^(?=.{1,254}$)(?=.{1,64}@.{1,255}$)[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?!-)[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+  // regex validates emails according to RFC 5321 conforming to Google's standards for nodemailer
+  return emailRegex.test(email);
+}
+
 async function register(req, res) {
   const { email, password, repeatedPassword } = req.body;
-  // the following code will need to be strengthened with a RegEx in testing.
-  if (!email.includes('@') || !email.includes('.')) {
+  if (!isValidEmail(email)) {
     res.status(400);
     res.json({ msg: 'Please enter a valid email address.' });
     return;
