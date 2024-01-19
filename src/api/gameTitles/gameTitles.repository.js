@@ -12,7 +12,13 @@ async function getAllTitles() {
   return gameTitles;
 }
 
+async function getByProductId({ gameTitleId }) {
+  const gameTitle = await gameTitleModel.findById(gameTitleId).lean();
+  return gameTitle;
+}
+
 export {
   getById,
   getAllTitles,
+  getByProductId,
 };

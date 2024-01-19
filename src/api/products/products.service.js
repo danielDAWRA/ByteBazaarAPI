@@ -5,7 +5,12 @@ async function getAll() {
   return products;
 }
 
+async function getById({ id }) {
+  const product = await productsRepository.getById({ id });
+  return product;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getAll,
+  getById,
 };
