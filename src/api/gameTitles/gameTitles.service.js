@@ -7,25 +7,9 @@ async function getById({ id }) {
 }
 
 async function getByProductId(productId) {
-  try {
-    const product = await productsService.getById({ _id: productId });
-    console.log('product gameTitle.service:', product);
-    console.log('product:', product);
-
-    let gameTitleId;
-
-    if (product && product.gameTitle_id) {
-      gameTitleId = product.gameTitle_id;
-    } else {
-      console.error('Product or gameTitle_id is null.');
-      return null;
-    }
-
-    return gameTitleId;
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
+  const product = await productsService.getById({ _id: productId });
+  const gameTitles = await gameTitlesRepository.getByProductId({ gameTitleId: product._id });
+  return gameTitles;
 }
 
 export {
