@@ -9,7 +9,6 @@ async function getById(req, res) {
 async function getByProductId(req, res) {
   const productId = req.params.id;
   const gameTitles = await gameTitlesService.getByProductId(productId);
-  console.log('gameTitles.controller:', gameTitles);
   res.json(gameTitles);
 }
 
