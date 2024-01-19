@@ -5,7 +5,12 @@ async function getById({ id }) {
   return gameTitle;
 }
 
+async function getByProductId({ gameTitleId }) {
+  const gameTitle = await gameTitleModel.findById(gameTitleId).lean();
+  return gameTitle;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getByProductId,
 };
