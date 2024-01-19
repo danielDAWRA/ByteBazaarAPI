@@ -18,8 +18,8 @@ function getToken({ userId, timeout }) {
 async function sendEmail({ email }) {
   const { EMAIL_TIMEOUT } = process.env;
   const emailToken = getToken({ userId: email, timeout: EMAIL_TIMEOUT });
-  // eslint-disable-next-line prefer-template
-  const url = 'http://localhost:3000/auth/validate/' + emailToken;
+  const validatePath = 'http://localhost:3000/auth/validate/';
+  const url = validatePath + emailToken;
   await transporter.sendMail({
     to: email,
     subject: 'Confirm registration',
