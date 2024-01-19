@@ -1,8 +1,13 @@
 import gameTitleModel from './gameTitles.model.js';
 
 async function getById({ id }) {
-  const gameTitle = await gameTitleModel.findById(id).lean();
+  const gameTitle = await gameTitleModel.findById(id);
   return gameTitle;
+}
+
+async function getAllTitles() {
+  const gameTitles = await gameTitleModel.find();
+  return gameTitles;
 }
 
 async function getByProductId({ gameTitleId }) {
@@ -12,5 +17,6 @@ async function getByProductId({ gameTitleId }) {
 
 export {
   getById,
+  getAllTitles,
   getByProductId,
 };
