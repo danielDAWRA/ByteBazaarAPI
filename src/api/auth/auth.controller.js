@@ -1,5 +1,4 @@
 import * as authService from './auth.service.js';
-import transporter from '../nodemailer.js';
 
 function isValidEmail(email) {
   // eslint-disable-next-line no-useless-escape
@@ -20,15 +19,8 @@ async function register(req, res) {
     res.json({ msg: 'Both passwords must match.' });
     return;
   }
-  const emailToken = await authService.register({ user: req.body });
-  // eslint-disable-next-line prefer-template
-  const url = 'http://localhost:3000/auth/validate/' + emailToken;
-  await transporter.sendMail({
-    to: email,
-    subject: 'Confirm registration',
-    html: `<h3>You're almost there!</h3><br><a href=${url}>Click this link to confirm your email address.</a>`,
-  });
-  res.json({ msg: 'We have just sent you a confirmation email—please check your inbox.' });
+  const token = await authService.register({ newUser: req.body });
+  res.json({ msg: 'We have just sent you a confirmation email—please check your inbox.', token });
 }
 
 async function validate(req, res) {

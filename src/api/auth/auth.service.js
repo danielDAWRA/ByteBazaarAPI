@@ -1,6 +1,7 @@
 import { hashSync } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as usersRepository from '../users/users.repository.js';
+import transporter from '../nodemailer.js';
 
 function getToken({ userId, timeout }) {
   const payload = {
@@ -14,15 +15,28 @@ function getToken({ userId, timeout }) {
   return token;
 }
 
-async function register({ user }) {
-  const { password } = user;
+async function sendEmail({ email }) {
+  const { EMAIL_TIMEOUT } = process.env;
+  const emailToken = getToken({ userId: email, timeout: EMAIL_TIMEOUT });
+  // eslint-disable-next-line prefer-template
+  const url = 'http://localhost:3000/auth/validate/' + emailToken;
+  await transporter.sendMail({
+    to: email,
+    subject: 'Confirm registration',
+    html: `<h3>You're almost there!</h3><br><a href=${url}>Click this link to confirm your email address.</a>`,
+  });
+}
+
+async function register({ newUser }) {
+  const { password } = newUser;
   const intSaltOrRoundsHash = parseInt(process.env.SALT_OR_ROUNDS_HASH);
   const hashedPassword = hashSync(password, intSaltOrRoundsHash);
-  const newUser = user;
-  newUser.password = hashedPassword;
-  await usersRepository.register({ user: newUser });
-  const { EMAIL_TIMEOUT } = process.env;
-  const token = getToken({ userId: newUser.email, timeout: EMAIL_TIMEOUT });
+  const user = newUser;
+  user.password = hashedPassword;
+  const createdUser = await usersRepository.register({ user });
+  await sendEmail({ email: user.email });
+  const { TOKEN_TIMEOUT } = process.env;
+  const token = getToken({ userId: createdUser._id, timeout: TOKEN_TIMEOUT });
   return token;
 }
 
