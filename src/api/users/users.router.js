@@ -4,5 +4,6 @@ import * as usersController from './users.controller.js';
 const router = Router();
 
 router.get('/:id', usersController.getById);
+router.get('/byEmail', usersController.getByEmail);
 
 export default router;

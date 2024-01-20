@@ -5,6 +5,13 @@ async function getById({ id }) {
   return user;
 }
 
-export default {
+async function getByEmail({ email }) {
+  const user = await userModel.findOne({ email }).lean();
+  return user;
+}
+
+export {
+  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getByEmail,
 };

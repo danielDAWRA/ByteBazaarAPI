@@ -16,8 +16,8 @@ function getToken(userId) {
   return token;
 }
 
-async function login({ username, password }) {
-  const user = await usersRepository.getByUsername({ username });
+async function login({ email, password }) {
+  const user = await usersRepository.getByEmail({ email });
   let token;
 
   if (user && compareSync(password, user.password)) {
@@ -27,4 +27,7 @@ async function login({ username, password }) {
   return token;
 }
 
-export default login;
+export {
+  // eslint-disable-next-line import/prefer-default-export
+  login,
+};

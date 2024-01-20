@@ -6,6 +6,15 @@ async function getById(req, res) {
   res.json(user);
 }
 
-export default {
+async function getByEmail(req, res) {
+  const { email } = req.params;
+  const user = await usersService.getByEmail({ email });
+  res.json(user);
+}
+
+export {
+
+  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getByEmail,
 };

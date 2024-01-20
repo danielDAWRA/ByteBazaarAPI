@@ -1,15 +1,15 @@
 import * as authService from './auth.service.js';
 
 async function login(req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
+  if (!email || !password) {
     res.status(400);
-    res.json('Username and password are required!');
+    res.json('Email and password are required!');
     return;
   }
 
-  const token = await authService.login({ username, password });
+  const token = await authService.login({ email, password });
   if (!token) {
     res.status(400);
     res.json({ msg: 'Wrong Credidentials' });
@@ -18,4 +18,7 @@ async function login(req, res) {
   res.json({ token });
 }
 
-export default login;
+export {
+  // eslint-disable-next-line import/prefer-default-export
+  login,
+};

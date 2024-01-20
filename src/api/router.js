@@ -6,6 +6,8 @@ import platformsRouter from './platforms/platforms.router.js';
 import productsRouter from './products/products.router.js';
 import usersRouter from './users/users.router.js';
 
+import authRouter from './auth/auth.router.js';
+
 const router = Router();
 
 router.use('/genres', genresRouter);
@@ -14,5 +16,7 @@ router.use('/gameTitles', gameTitlesRouter);
 router.use('/platforms', platformsRouter);
 router.use('/products', productsRouter);
 router.use('/users', usersRouter);
+
+router.use('/auth', authRouter);
 
 export default router;
