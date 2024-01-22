@@ -5,7 +5,20 @@ async function getGenreById(id) {
   return genre;
 }
 
+async function getGenreByName(genreName) {
+  const genre = await genreModel.findOne({ name: genreName });
+  return genre;
+}
+
+async function createGenre(genre) {
+  // eslint-disable-next-line new-cap
+  const newGenre = new genreModel({ genre });
+  await newGenre.save();
+  return newGenre;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getGenreById,
+  getGenreByName,
+  createGenre,
 };

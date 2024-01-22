@@ -17,8 +17,14 @@ async function getByProductId(req, res) {
   res.json(gameTitles);
 }
 
+async function createTitle(req, res) {
+  const newTitleAndGenreRelation = await gameTitlesService.createTitle(req.body);
+  res.json(newTitleAndGenreRelation);
+}
+
 export {
   getById,
   getAllTitles,
   getByProductId,
+  createTitle,
 };
