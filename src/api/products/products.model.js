@@ -11,6 +11,7 @@ const productsSchema = new Schema({
   platform_id: {
     type: ObjectId,
     required: true,
+    ref: 'Platform',
   },
   stock: {
     type: Number,
