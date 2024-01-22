@@ -11,8 +11,10 @@ import * as genresRepository from '../genres/genres.repository.js';
 import * as genres_gameTitlesRepository from '../genres_gameTitles/genres_gameTitles.repository.js';
 
 async function getById({ id }) {
-  const gameTitles = await gameTitlesRepository.getById({ id });
-  return gameTitles;
+  const gameTitle = await gameTitlesRepository.getById({ id });
+  const genres = await genresRepository.getGenresByTitleId(id);
+  gameTitle.genres = genres;
+  return gameTitle;
 }
 
 async function getAllTitles() {
