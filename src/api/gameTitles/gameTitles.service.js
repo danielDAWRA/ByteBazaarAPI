@@ -31,38 +31,47 @@ async function createTitle(newTitleData) {
     title, description, image, genre,
   } = newTitleData;
 
+  const created = {
+    gameTitle: false,
+    genre: false,
+    genre_gameTitleRelation: false,
+  };
+
   // Check if the 'title' already exists. Create new one only if not exists.
-  let newTitle;
+  let titleUpsert;
   const foundGameTitle = await gameTitlesRepository.getByTitle(title);
   if (foundGameTitle) {
-    newTitle = foundGameTitle;
+    titleUpsert = foundGameTitle;
   } else {
-    newTitle = await gameTitlesRepository.createTitle({ title, description, image });
+    titleUpsert = await gameTitlesRepository.createTitle({ title, description, image });
+    created.gameTitle = true;
   }
 
   // Check if 'genre' already exists. If not, create a new one.
-  let genreId;
+  let genreIdUpsert;
   const foundGenre = await genresRepository.getGenreByName(genre);
   if (foundGenre) {
-    genreId = foundGenre._id;
+    genreIdUpsert = foundGenre._id;
   } else {
     const newGenre = await genresRepository.createGenre(genre);
-    genreId = newGenre._id;
+    genreIdUpsert = newGenre._id;
+    created.genre = true;
   }
 
   // Check if Genre - Title relation already exists. If not, create it!
-  let titleGenreRelation;
+  let titleGenreRelationUpsert;
   const foundTitleGenreRelation = await genres_gameTitlesRepository
-    .findByGenreAndTitle(genreId, newTitle._id);
+    .findByGenreAndTitle(genreIdUpsert, titleUpsert._id);
   if (foundTitleGenreRelation) {
-    titleGenreRelation = foundTitleGenreRelation;
+    titleGenreRelationUpsert = foundTitleGenreRelation;
   } else {
     const newTitleGenreRelation = await genres_gameTitlesRepository
-      .createGameTitleGenreRelation(newTitle._id, genreId);
-    titleGenreRelation = newTitleGenreRelation;
+      .createGameTitleGenreRelation(titleUpsert._id, genreIdUpsert);
+    titleGenreRelationUpsert = newTitleGenreRelation;
+    created.genre_gameTitleRelation = true;
   }
 
-  return { newTitle, titleGenreRelation };
+  return { titleUpsert, titleGenreRelationUpsert, created };
 }
 
 export {
