@@ -17,8 +17,14 @@ async function createGenre(genre) {
   return newGenre;
 }
 
+async function createManyGenres(genres) {
+  const newGenres = await genreModel.insertMany(genres);
+  return newGenres;
+}
+
 export {
   getGenreById,
   getGenreByName,
   createGenre,
+  createManyGenres,
 };

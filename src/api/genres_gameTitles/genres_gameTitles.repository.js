@@ -28,8 +28,14 @@ async function findByGenreAndTitle(genreId, titleId) {
   return foundGenreTitleRelation;
 }
 
+async function createManyGenreAndTitleRelations(genreAndTitleRelations) {
+  const newRelations = Genre_GameTitleModel.insertMany(genreAndTitleRelations);
+  return newRelations;
+}
+
 export {
   createGameTitleGenreRelation,
   getAllGenreTitleRelations,
   findByGenreAndTitle,
+  createManyGenreAndTitleRelations,
 };
