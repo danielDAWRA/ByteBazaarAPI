@@ -8,6 +8,11 @@
 import genreModel from './genres.model.js';
 import Genre_GameTitleModel from '../genres_gameTitles/genres_gameTitles.model.js';
 
+async function getAll() {
+  const genres = await genreModel.find({}).lean();
+  return genres;
+}
+
 async function getGenreById(id) {
   const genre = await genreModel.findById(id).lean();
   return genre;
@@ -36,6 +41,7 @@ async function getGenresByTitleId(id) {
 
 export {
   getGenreById,
+  getAll,
   getGenreByName,
   createGenre,
   getGenresByTitleId,
