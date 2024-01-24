@@ -11,6 +11,7 @@ function isLogged(req, res, next) {
     '/auth/login',
     '/auth/register',
     '/auth/validate',
+    '/products/all',
   ];
   const isPublicRoute = publicRoutes.some((publicRoute) => req.url.startsWith(publicRoute));
   if (isPublicRoute) {
