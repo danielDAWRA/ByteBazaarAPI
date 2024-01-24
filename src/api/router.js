@@ -16,6 +16,7 @@ router.use('/gameTitles', gameTitlesRouter);
 router.use('/orders', ordersRouter);
 router.use('/platforms', platformsRouter);
 router.use('/products', productsRouter);
+router.use('/product', productsRouter);
 router.use('/users', usersRouter);
 
 router.use('/auth/', authRouter);

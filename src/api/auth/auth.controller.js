@@ -5,7 +5,7 @@ async function login(req, res) {
 
   if (!email || !password) {
     res.status(400);
-    res.json('Email and password are required!');
+    res.json({ msg: 'Email and password are required!' });
     return;
   }
 
