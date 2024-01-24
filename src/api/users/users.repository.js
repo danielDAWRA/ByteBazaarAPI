@@ -10,8 +10,19 @@ async function getByEmail({ email }) {
   return user;
 }
 
+async function register({ user }) {
+  const createdUser = await userModel.create(user);
+  return createdUser;
+}
+
+async function validate({ email }) {
+  const user = await userModel.findOneAndUpdate({ email }, { validated: true });
+  return user;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
   getByEmail,
+  register,
+  validate,
 };

@@ -11,6 +11,7 @@ const usersSchema = new Schema({
   },
   isAdmin: {
     type: Boolean,
+    default: false,
   },
   email: {
     type: String,
@@ -23,9 +24,11 @@ const usersSchema = new Schema({
   },
   validated: {
     type: Boolean,
+    default: false,
   },
   credit: {
     type: Number,
+    default: 500,
   },
   points: {
     type: Number,

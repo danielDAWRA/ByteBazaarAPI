@@ -13,8 +13,6 @@ async function getByEmail(req, res) {
 }
 
 export {
-
-  // eslint-disable-next-line import/prefer-default-export
   getById,
   getByEmail,
 };

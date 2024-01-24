@@ -11,7 +11,6 @@ async function getByEmail({ email }) {
 }
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
   getByEmail,
 };

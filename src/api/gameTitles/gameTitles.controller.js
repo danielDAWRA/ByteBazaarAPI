@@ -6,7 +6,19 @@ async function getById(req, res) {
   res.json(gameTitles);
 }
 
+async function getAllTitles(req, res) {
+  const gameTitles = await gameTitlesService.getAllTitles();
+  res.json(gameTitles);
+}
+
+async function getByProductId(req, res) {
+  const productId = req.params.id;
+  const gameTitles = await gameTitlesService.getByProductId(productId);
+  res.json(gameTitles);
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getAllTitles,
+  getByProductId,
 };

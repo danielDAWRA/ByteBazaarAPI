@@ -8,7 +8,13 @@ async function getAll() {
   return products;
 }
 
+async function getById({ id }) {
+  const user = await productsModel.findById(id).lean();
+  console.log('user', user);
+  return user;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getAll,
+  getById,
 };
