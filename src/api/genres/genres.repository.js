@@ -1,5 +1,10 @@
 import genreModel from './genres.model.js';
 
+async function getAll() {
+  const genres = await genreModel.find({}).lean();
+  return genres;
+}
+
 async function getGenreById(id) {
   const genre = await genreModel.findById(id).lean();
   return genre;
@@ -24,6 +29,7 @@ async function createManyGenres(genres) {
 
 export {
   getGenreById,
+  getAll,
   getGenreByName,
   createGenre,
   createManyGenres,
