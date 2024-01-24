@@ -1,7 +1,7 @@
 import * as productsRepository from './products.repository.js';
 
-async function getAll() {
-  const products = await productsRepository.getAll();
+async function getAll({ skip, limit }) {
+  const products = await productsRepository.getAll({ skip, limit });
   return products;
 }
 
