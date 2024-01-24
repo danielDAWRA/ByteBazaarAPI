@@ -1,11 +1,4 @@
 /* eslint-disable camelcase */
-
-/**
- * Disabled eslint camelCase warning so it's more clear that the model
- * represents a relations between two collections.
- * i.e. Genre_GameTitleModel is a relation between Genre and GameTitle
- */
-
 import Genre_GameTitleModel from './genres_gameTitles.model.js';
 
 async function getAllGenreTitleRelations() {
@@ -28,8 +21,14 @@ async function findByGenreAndTitle(genreId, titleId) {
   return foundGenreTitleRelation;
 }
 
+async function createManyGenreAndTitleRelations(genreAndTitleRelations) {
+  const newRelations = Genre_GameTitleModel.insertMany(genreAndTitleRelations);
+  return newRelations;
+}
+
 export {
   createGameTitleGenreRelation,
   getAllGenreTitleRelations,
   findByGenreAndTitle,
+  createManyGenreAndTitleRelations,
 };

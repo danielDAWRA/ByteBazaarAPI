@@ -1,10 +1,4 @@
 /* eslint-disable camelcase */
-
-/**
- * Disabled eslint camelcase rule so it's clear that
- * Genre_GameTitleModel represents a relation between two collections
- */
-
 import genreModel from './genres.model.js';
 import Genre_GameTitleModel from '../genres_gameTitles/genres_gameTitles.model.js';
 
@@ -39,10 +33,16 @@ async function getGenresByTitleId(id) {
   return genresArray;
 }
 
+async function createManyGenres(genres) {
+  const newGenres = await genreModel.insertMany(genres);
+  return newGenres;
+}
+
 export {
   getGenreById,
   getAll,
   getGenreByName,
   createGenre,
   getGenresByTitleId,
+  createManyGenres,
 };

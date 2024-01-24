@@ -1,11 +1,4 @@
 /* eslint-disable camelcase */
-
-/**
- * Disabled eslint camelCase warning so it's more clear that the model
- * represents a relations between two collections.
- * i.e. Genre_GameTitleModel is a relation between Genre and GameTitle
- */
-
 import { Schema, model } from 'mongoose';
 
 const schema = new Schema({

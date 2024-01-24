@@ -1,10 +1,4 @@
 /* eslint-disable camelcase */
-
-/**
- * Disabled eslint camelCase rule so it's clear that genres_gameTitlesRepository
- * represents a relation between two models (a join table)
- */
-
 import * as gameTitlesRepository from './gameTitles.repository.js';
 import * as productsService from '../products/products.service.js';
 import * as genresRepository from '../genres/genres.repository.js';
@@ -30,41 +24,62 @@ async function getByProductId(productId) {
 
 async function createTitle(newTitleData) {
   const {
-    title, description, image, genre,
+    title, description, image, genres,
   } = newTitleData;
 
-  // Check if the 'title' already exists. Create new one only if not exists.
-  let newTitle;
+  const created = {
+    gameTitle: [],
+    genres: [],
+    genre_gameTitleRelation: [],
+  };
+
+  let titleUpsert;
   const foundGameTitle = await gameTitlesRepository.getByTitle(title);
   if (foundGameTitle) {
-    newTitle = foundGameTitle;
+    titleUpsert = foundGameTitle;
   } else {
-    newTitle = await gameTitlesRepository.createTitle({ title, description, image });
+    titleUpsert = await gameTitlesRepository.createTitle({ title, description, image });
+    created.gameTitle.push(titleUpsert);
   }
 
-  // Check if 'genre' already exists. If not, create a new one.
-  let genreId;
-  const foundGenre = await genresRepository.getGenreByName(genre);
-  if (foundGenre) {
-    genreId = foundGenre._id;
-  } else {
-    const newGenre = await genresRepository.createGenre(genre);
-    genreId = newGenre._id;
-  }
+  const genresUpsertMapPromises = genres.map(async (genre) => {
+    const foundGenre = await genresRepository.getGenreByName(genre);
+    return { genre, found: !!foundGenre };
+  });
+  const genresUpsertMap = await Promise.all(genresUpsertMapPromises);
+  const genresToCreate = genresUpsertMap
+    .filter((genre) => !genre.found)
+    .map((genre) => ({ name: genre.genre }));
+  const newGenres = await genresRepository.createManyGenres(genresToCreate);
+  newGenres.forEach((newGenre) => created.genres.push(newGenre));
 
-  // Check if Genre - Title relation already exists. If not, create it!
-  let titleGenreRelation;
-  const foundTitleGenreRelation = await genres_gameTitlesRepository
-    .findByGenreAndTitle(genreId, newTitle._id);
-  if (foundTitleGenreRelation) {
-    titleGenreRelation = foundTitleGenreRelation;
-  } else {
-    const newTitleGenreRelation = await genres_gameTitlesRepository
-      .createGameTitleGenreRelation(newTitle._id, genreId);
-    titleGenreRelation = newTitleGenreRelation;
-  }
+  const genrePromises = genres.map(async (genre) => {
+    const foundGenre = await genresRepository.getGenreByName(genre);
+    return foundGenre;
+  });
+  const genresToRelate = await Promise.all(genrePromises);
+  //  - Define which relations need to be created
+  const titleGenreRelationUpsertPromises = genresToRelate.map(async (genre) => {
+    const foundTitleGenreRelation = await genres_gameTitlesRepository
+      .findByGenreAndTitle(genre._id, titleUpsert._id);
+    return {
+      relation: { genre: genre._id, title: titleUpsert._id },
+      found: !!foundTitleGenreRelation,
+    };
+  });
+  const titleGenreRelationUpsertMap = await Promise.all(titleGenreRelationUpsertPromises);
+  const titleGenreRelationsToCreate = titleGenreRelationUpsertMap
+    .filter((titleGenreRelation) => titleGenreRelation.found === false)
+    .map((titleGenreRelation) => ({
+      gameTitle_id: titleGenreRelation.relation.title,
+      genre_id: titleGenreRelation.relation.genre,
+    }));
 
-  return { newTitle, titleGenreRelation };
+  const newGenreAndTitleRelations = await genres_gameTitlesRepository
+    .createManyGenreAndTitleRelations(titleGenreRelationsToCreate);
+  created.genre_gameTitleRelation.push(...newGenreAndTitleRelations);
+
+  return { created };
 }
 
 export {
