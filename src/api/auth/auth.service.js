@@ -21,12 +21,17 @@ async function login({ email, password }) {
   const user = await usersRepository.getByEmail({ email });
   let token;
 
+  if (!user || !password) {
+    throw new Error('User or password missing');
+  }
+
   if (user && compareSync(password, user.password)) {
     const { TOKEN_TIMEOUT } = process.env;
     token = getToken({ userId: user._id, timeout: TOKEN_TIMEOUT });
-  }
 
-  return token;
+    return token;
+  }
+  return {};
 }
 
 async function sendEmail({ email }) {
