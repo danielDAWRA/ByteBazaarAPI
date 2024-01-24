@@ -18,12 +18,6 @@ async function login(req, res) {
   res.json({ token });
 }
 
-export {
-  // eslint-disable-next-line import/prefer-default-export
-  login,
-};
-import * as authService from './auth.service.js';
-
 function isValidEmail(email) {
   // eslint-disable-next-line no-useless-escape
   const emailRegex = /^(?=.{1,254}$)(?=.{1,64}@.{1,255}$)[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?!-)[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
@@ -56,4 +50,5 @@ async function validate(req, res) {
 export {
   register,
   validate,
+  login,
 };

@@ -1,15 +1,16 @@
-import { compareSync } from 'bcrypt';
+import { compareSync, hashSync } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as usersRepository from '../users/users.repository.js';
+import transporter from '../nodemailer.js';
 
-function getToken(userId) {
+function getToken({ userId, timeout }) {
   const payload = {
     userId,
   };
 
-  const { TOKEN_SECRET_WORD, TOKEN_TIMEOUT } = process.env;
+  const { TOKEN_SECRET_WORD } = process.env;
   const options = {
-    expiresIn: TOKEN_TIMEOUT, // 1h
+    expiresIn: timeout,
   };
 
   const token = jwt.sign(payload, TOKEN_SECRET_WORD, options);
@@ -21,37 +22,17 @@ async function login({ email, password }) {
   let token;
 
   if (user && compareSync(password, user.password)) {
-    token = getToken(user._id);
+    const { TOKEN_TIMEOUT } = process.env;
+    token = getToken({ userId: user._id, timeout: TOKEN_TIMEOUT });
   }
 
   return token;
 }
 
-export {
-  // eslint-disable-next-line import/prefer-default-export
-  login,
-};
-import { hashSync } from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import * as usersRepository from '../users/users.repository.js';
-import transporter from '../nodemailer.js';
-
-function getToken({ userId, timeout }) {
-  const payload = {
-    userId,
-  };
-  const { TOKEN_SECRET_WORD } = process.env;
-  const options = {
-    expiresIn: timeout,
-  };
-  const token = jwt.sign(payload, TOKEN_SECRET_WORD, options);
-  return token;
-}
-
 async function sendEmail({ email }) {
-  const { EMAIL_TIMEOUT } = process.env;
+  const { EMAIL_TIMEOUT, PORT } = process.env;
   const emailToken = getToken({ userId: email, timeout: EMAIL_TIMEOUT });
-  const validatePath = 'http://localhost:3000/auth/validate/';
+  const validatePath = `http://localhost:${PORT}/auth/validate/`;
   const url = validatePath + emailToken;
   await transporter.sendMail({
     to: email,
@@ -83,4 +64,5 @@ async function validate({ emailToken }) {
 export {
   register,
   validate,
+  login,
 };
