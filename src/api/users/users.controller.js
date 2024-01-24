@@ -6,8 +6,13 @@ async function getById(req, res) {
   res.json(user);
 }
 
-export {
+async function getProfileById(req, res) {
+  const { _id } = req.user;
+  const profile = await usersService.getProfileById({ _id });
+  return res.json({ profile });
+}
 
-  // eslint-disable-next-line import/prefer-default-export
+export {
   getById,
+  getProfileById,
 };
