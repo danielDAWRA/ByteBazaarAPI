@@ -7,9 +7,12 @@ async function getById(req, res) {
 }
 
 async function getProfileById(req, res) {
-  const { _id } = req.user;
+  // console.log(req.user);
+  // const { _id } = req.user;
+  // console.log(_id);
+  const _id = '65b16598a0b97d32adc737ab';
   const profile = await usersService.getProfileById({ _id });
-  return res.json({ profile });
+  return profile;
 }
 
 export {
