@@ -1,10 +1,4 @@
 /* eslint-disable camelcase */
-
-/**
- * Disabled eslint camelCase rule so it's clear that genres_gameTitlesRepository
- * represents a relation between two models (a join table)
- */
-
 import * as gameTitlesRepository from './gameTitles.repository.js';
 import * as productsService from '../products/products.service.js';
 import * as genresRepository from '../genres/genres.repository.js';
@@ -26,14 +20,6 @@ async function getByProductId(productId) {
   return gameTitles;
 }
 
-/**
- * createTitle implementation:
- * - Insert into 'gameTitles' collection IF NOT EXISTS
- * - Insert into 'genres' collection IF NOT EXISTS (supports multiple genres)
- * - Insert into 'genres_gameTitles' collection IF NOT EXISTS (supports multiple relations)
- * - Returns object containing only newly created / stored data
- */
-
 async function createTitle(newTitleData) {
   const {
     title, description, image, genres,
@@ -45,7 +31,6 @@ async function createTitle(newTitleData) {
     genre_gameTitleRelation: [],
   };
 
-  // STEP 1: Insert into 'gameTitles' IF NOT EXISTS
   let titleUpsert;
   const foundGameTitle = await gameTitlesRepository.getByTitle(title);
   if (foundGameTitle) {
@@ -55,7 +40,6 @@ async function createTitle(newTitleData) {
     created.gameTitle.push(titleUpsert);
   }
 
-  // STEP 2: Insert into 'genres' IF NOT EXISTS
   const genresUpsertMapPromises = genres.map(async (genre) => {
     const foundGenre = await genresRepository.getGenreByName(genre);
     return { genre, found: !!foundGenre };
@@ -65,11 +49,8 @@ async function createTitle(newTitleData) {
     .filter((genre) => !genre.found)
     .map((genre) => ({ name: genre.genre }));
   const newGenres = await genresRepository.createManyGenres(genresToCreate);
-  // created.genres.push(...newGenres); // ! Throws Error, why?
   newGenres.forEach((newGenre) => created.genres.push(newGenre));
 
-  // STEP 3: Insert into 'genres_gameTitles' IF NOT EXISTS
-  //  - Retrieve genres again because we need all the id's
   const genrePromises = genres.map(async (genre) => {
     const foundGenre = await genresRepository.getGenreByName(genre);
     return foundGenre;
@@ -92,7 +73,6 @@ async function createTitle(newTitleData) {
       genre_id: titleGenreRelation.relation.genre,
     }));
 
-  // Create new relations!
   const newGenreAndTitleRelations = await genres_gameTitlesRepository
     .createManyGenreAndTitleRelations(titleGenreRelationsToCreate);
   created.genre_gameTitleRelation.push(...newGenreAndTitleRelations);
