@@ -7,9 +7,7 @@ async function getAll(req, res) {
 }
 
 async function getRecommended(req, res) {
-  // ponerlo por params o probar a pelo el de BD
-  // const { _id } = req.user;
-  const userId = '65b1592188e7a12afad2a5da';
+  const userId = req.user._id;
   const products = await productsService.getRecommended({ userId });
   res.json({ products });
 }
