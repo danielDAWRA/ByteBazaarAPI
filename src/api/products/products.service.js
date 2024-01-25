@@ -3,8 +3,8 @@ import * as orderProductsRepository from '../orderProducts/orderProducts.reposit
 import * as ordersService from '../orders/orders.service.js';
 import * as genresGameTitlesRepository from '../genres_gameTitles/genres_gameTitles.service.js';
 
-async function getAll() {
-  const products = await productsRepository.getAll();
+async function getAll({ skip, limit }) {
+  const products = await productsRepository.getAll({ skip, limit });
   return products;
 }
 

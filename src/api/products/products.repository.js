@@ -1,10 +1,15 @@
 import productsModel from './products.model.js';
 import * as orderProductsRepository from '../orderProducts/orderProducts.repository.js';
 
-async function getAll() {
+async function getAll({ skip, limit }) {
   const products = await productsModel
-    .find()
+    .find({})
+    .select('stock price')
+    .populate({ path: 'gameTitle_id', select: '-_id -description' })
+    .populate({ path: 'platform_id', select: '-_id' })
     .sort({ listedDate: -1 })
+    .skip(skip)
+    .limit(limit)
     .lean();
   return products;
 }
