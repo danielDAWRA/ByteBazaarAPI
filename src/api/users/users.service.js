@@ -5,12 +5,7 @@ async function getById({ id }) {
   return user;
 }
 
-async function getProfileById({ id }) {
-  const profile = await usersRepository.getProfileById({ id });
-  return profile;
-}
-
 export {
+  // eslint-disable-next-line import/prefer-default-export
   getById,
-  getProfileById,
 };

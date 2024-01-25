@@ -5,11 +5,6 @@ async function getById({ id }) {
   return user;
 }
 
-async function getProfileById({ id }) {
-  const profile = await userModel.findById(id).lean();
-  return profile;
-}
-
 async function register({ user }) {
   const createdUser = await userModel.create(user);
   return createdUser;
@@ -22,7 +17,6 @@ async function validate({ email }) {
 
 export {
   getById,
-  getProfileById,
   register,
   validate,
 };
