@@ -5,8 +5,8 @@ async function getById({ id }) {
   return user;
 }
 
-async function getProfileById({ _id }) {
-  const profile = await userModel.findById(_id).select('-_id -isAdmin -validated').lean();
+async function getProfileById({ id }) {
+  const profile = await userModel.findById(id).lean();
   return profile;
 }
 

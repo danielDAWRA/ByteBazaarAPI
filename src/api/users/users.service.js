@@ -5,8 +5,8 @@ async function getById({ id }) {
   return user;
 }
 
-async function getProfileById({ _id }) {
-  const profile = await usersRepository.getProfileById({ _id });
+async function getProfileById({ id }) {
+  const profile = await usersRepository.getProfileById({ id });
   return profile;
 }
 
