@@ -17,7 +17,7 @@ async function getRecommended({ userId }) {
   const userOrders = await ordersService.getOrdersByUserId({ userId });
   if (!(userOrders && userOrders.length >= 1)) {
     // Retornamos los producto más recientes si no hay pedidos todavía
-    const products = await productsRepository.getAll();
+    const products = await productsRepository.getAll({ skip: 0, limit: 10 });
     return products;
   }
   // Obtener la ultima orden

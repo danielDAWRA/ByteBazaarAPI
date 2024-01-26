@@ -1,5 +1,4 @@
 import productsModel from './products.model.js';
-import * as orderProductsRepository from '../orderProducts/orderProducts.repository.js';
 
 async function getAll({ skip, limit }) {
   const products = await productsModel
@@ -19,11 +18,6 @@ async function getById({ id }) {
   return user;
 }
 
-async function getLastOrderProducts({ orderId }) {
-  const products = await orderProductsRepository.getProductGameTitleFromOrder({ orderId });
-  return products;
-}
-
 async function getRecommended({ platformId, gameTitleIds }) {
   const recommendedProducts = await productsModel
     .find({
@@ -39,6 +33,5 @@ async function getRecommended({ platformId, gameTitleIds }) {
 export {
   getAll,
   getById,
-  getLastOrderProducts,
   getRecommended,
 };
