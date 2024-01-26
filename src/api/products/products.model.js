@@ -6,10 +6,12 @@ const productsSchema = new Schema({
   gameTitle_id: {
     type: ObjectId,
     required: true,
+    ref: 'GameTitle',
   },
   platform_id: {
     type: ObjectId,
     required: true,
+    ref: 'Platform',
   },
   stock: {
     type: Number,
