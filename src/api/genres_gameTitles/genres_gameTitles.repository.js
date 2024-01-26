@@ -12,7 +12,6 @@ async function getGameTitlesByGenreIds({ genreIds }) {
 }
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getGenresByGameTitleId,
   getGameTitlesByGenreIds,
 };

@@ -5,15 +5,14 @@ const { ObjectId } = Schema.Types;
 const orderProductSchema = new Schema({
   productId: {
     type: ObjectId,
-    ref: 'Product',
+    ref: 'product',
   },
   orderId: {
     type: ObjectId,
     ref: 'order',
   },
   quantity: {
-    type: Boolean,
-    default: false,
+    type: Number,
   },
   price: {
     type: Number,

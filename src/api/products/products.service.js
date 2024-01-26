@@ -39,6 +39,7 @@ async function getRecommended({ userId }) {
   const gameTitleIds = gameTitles.map((item) => item.gameTitle_id);
 
   const recommended = await productsRepository.getRecommended({ platformId, gameTitleIds });
+  console.log(recommended);
   return recommended;
 }
 
