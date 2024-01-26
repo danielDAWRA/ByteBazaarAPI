@@ -1,9 +1,16 @@
 import * as genresRepository from './genres.repository.js';
 
+async function getAll() {
+  const genres = await genresRepository.getAll();
+  return genres;
+}
+
 async function getGenreById(id) {
   const genre = await genresRepository.getGenreById(id);
   return genre;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { getGenreById };
+export {
+  getGenreById,
+  getAll,
+};
