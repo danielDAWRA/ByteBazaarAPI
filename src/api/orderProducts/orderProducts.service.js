@@ -1,12 +1,8 @@
-import orderProductsModel from './orderProducts.model.js';
+import * as orderProductsRepo from './orderProducts.repository.js';
 
 async function getProductGameTitleFromOrder({ orderId }) {
-  const productGameTitleFromOrder = await orderProductsModel
-    .findOne({ orderId })
-    .populate({
-      path: 'productId',
-    });
-
+  const productGameTitleFromOrder = await orderProductsRepo
+    .getProductGameTitleFromOrder({ orderId });
   return productGameTitleFromOrder;
 }
 

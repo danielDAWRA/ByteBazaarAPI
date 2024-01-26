@@ -1,7 +1,7 @@
 import * as productsRepository from './products.repository.js';
-import * as orderProductsRepository from '../orderProducts/orderProducts.repository.js';
+import * as orderProductsService from '../orderProducts/orderProducts.service.js';
 import * as ordersService from '../orders/orders.service.js';
-import * as genresGameTitlesRepository from '../genres_gameTitles/genres_gameTitles.service.js';
+import * as genresGameTitlesService from '../genres_gameTitles/genres_gameTitles.service.js';
 
 async function getAll({ skip, limit }) {
   const products = await productsRepository.getAll({ skip, limit });
@@ -24,18 +24,18 @@ async function getRecommended({ userId }) {
   const lastOrder = userOrders.slice(0, 1)[0];
 
   const { _id } = lastOrder;
-  const orderProd = await orderProductsRepository
+  const orderProd = await orderProductsService
     .getProductGameTitleFromOrder({ orderId: _id });
 
   const platformId = orderProd.productId.platform_id;
   const gameTitleId = orderProd.productId.gameTitle_id;
 
   // Se obtiene el array de id de los géneros del GametTitleId
-  const genres = await genresGameTitlesRepository.getGenresByGameTitleId({ gameTitleId });
+  const genres = await genresGameTitlesService.getGenresByGameTitleId({ gameTitleId });
   const genreIds = genres.map((item) => item.genre_id);
 
   // Se buscan los gametTitleIds con esos mismos géneros
-  const gameTitles = await genresGameTitlesRepository.getGameTitlesByGenreIds({ genreIds });
+  const gameTitles = await genresGameTitlesService.getGameTitlesByGenreIds({ genreIds });
   const gameTitleIds = gameTitles.map((item) => item.gameTitle_id);
 
   const recommended = await productsRepository.getRecommended({ platformId, gameTitleIds });
