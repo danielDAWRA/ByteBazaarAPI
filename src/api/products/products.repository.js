@@ -19,7 +19,16 @@ async function getById({ id }) {
   return user;
 }
 
+async function getPriceById({ id }) {
+  const priceData = await productsModel.findById(id)
+    .select('price -_id')
+    .lean();
+  const { price } = priceData;
+  return price;
+}
+
 export {
   getAll,
   getById,
+  getPriceById,
 };

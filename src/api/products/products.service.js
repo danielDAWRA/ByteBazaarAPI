@@ -10,7 +10,13 @@ async function getById({ id }) {
   return product;
 }
 
+async function getPriceById({ id }) {
+  const price = await productsRepository.getPriceById({ id });
+  return price;
+}
+
 export {
   getAll,
   getById,
+  getPriceById,
 };
