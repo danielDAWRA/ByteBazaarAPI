@@ -5,7 +5,11 @@ async function getOrdersByUserId({ userId }) {
   return orders;
 }
 
+async function buy({ productId, userId, quantity }) {
+
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getOrdersByUserId,
+  buy,
 };
