@@ -14,9 +14,8 @@ async function getAll({ skip, limit }) {
 }
 
 async function getById({ id }) {
-  const user = await productsModel.findById(id).lean();
-  console.log('user', user);
-  return user;
+  const product = await productsModel.findById(id).lean();
+  return product;
 }
 
 export {

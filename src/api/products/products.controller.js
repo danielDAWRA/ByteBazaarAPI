@@ -6,7 +6,13 @@ async function getAll(req, res) {
   res.json({ products });
 }
 
+async function getById(req, res) {
+  const { id } = req.params;
+  const product = await productsService.getById({ id });
+  res.json({ product });
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getAll,
+  getById,
 };
