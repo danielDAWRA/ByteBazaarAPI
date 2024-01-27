@@ -30,7 +30,6 @@ async function getRecommended({ platformId, gameTitleIds }) {
 }
 
 const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
-  // Obtener una muestra aleatoria de documentos limitada por la cantidad especificada
   const relatedProducts = await productsModel
     .aggregate([
       { $match: { _id: { $ne: product }, gameTitle_id: { $in: gameTitleIds } } },
@@ -38,7 +37,6 @@ const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
     ])
     .exec();
 
-  console.log('---recommendedProducts repository: ', relatedProducts);
   return relatedProducts;
 };
 
