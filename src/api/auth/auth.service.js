@@ -19,23 +19,19 @@ function getToken({ userId, timeout }) {
 
 async function login({ email, password }) {
   const user = await usersRepository.getByEmail({ email });
-  let token;
 
-  try {
-    if (!user || !password) {
-      throw new Error('User or password missing');
-    }
-  } catch (error) {
-    console.error('Error:', error.message);
+  if (!user || !compareSync(password, user.password)) {
+    const myError = {
+      code: 401,
+      msg: 'Wrong login information',
+    };
+
+    throw new Error(JSON.stringify(myError));
   }
 
-  if (user && compareSync(password, user.password)) {
-    const { TOKEN_TIMEOUT } = process.env;
-    token = getToken({ userId: user._id, timeout: TOKEN_TIMEOUT });
-
-    return token;
-  }
-  return {};
+  const { TOKEN_TIMEOUT } = process.env;
+  const token = getToken({ userId: user._id, timeout: TOKEN_TIMEOUT });
+  return token;
 }
 
 async function sendEmail({ email }) {

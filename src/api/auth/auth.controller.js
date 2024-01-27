@@ -9,13 +9,14 @@ async function login(req, res) {
     return;
   }
 
-  const token = await authService.login({ email, password });
-  if (!token) {
-    res.status(400);
-    res.json({ msg: 'Wrong Credidentials' });
-    return;
+  try {
+    const token = await authService.login({ email, password });
+    res.json({ token });
+  } catch (error) {
+    const myError = JSON.parse(error.message);
+    res.status(myError.code);
+    res.json({ msg: myError.msg });
   }
-  res.json({ token });
 }
 
 function isValidEmail(email) {
