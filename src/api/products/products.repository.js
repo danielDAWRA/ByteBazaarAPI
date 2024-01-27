@@ -26,12 +26,23 @@ async function getRecommended({ platformId, gameTitleIds }) {
     })
     .sort({ listedDate: -1 })
     .lean();
-
   return recommendedProducts;
 }
+
+const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
+  const relatedProducts = await productsModel
+    .aggregate([
+      { $match: { _id: { $ne: product }, gameTitle_id: { $in: gameTitleIds } } },
+      { $sample: { size: limit } },
+    ])
+    .exec();
+
+  return relatedProducts;
+};
 
 export {
   getAll,
   getById,
   getRecommended,
+  getRelated,
 };

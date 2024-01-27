@@ -16,11 +16,11 @@ async function getById({ id }) {
 async function getRecommended({ userId }) {
   const userOrders = await ordersService.getOrdersByUserId({ userId });
   if (!(userOrders && userOrders.length >= 1)) {
-    // Retornamos los producto más recientes si no hay pedidos todavía
+    // Return the most recent products if no orders have been placed yet
     const products = await productsRepository.getAll({ skip: 0, limit: 10 });
     return products;
   }
-  // Obtener la ultima orden
+  // Obtain the last order
   const lastOrder = userOrders.slice(0, 1)[0];
 
   const { _id } = lastOrder;
@@ -30,16 +30,26 @@ async function getRecommended({ userId }) {
   const platformId = orderProd.productId.platform_id;
   const gameTitleId = orderProd.productId.gameTitle_id;
 
-  // Se obtiene el array de id de los géneros del GametTitleId
+  // The array of genre IDs for the GameTitleId is obtained
   const genres = await genresGameTitlesService.getGenresByGameTitleId({ gameTitleId });
   const genreIds = genres.map((item) => item.genre_id);
 
-  // Se buscan los gametTitleIds con esos mismos géneros
+  // The GameTitleIds with those same genres are searched for
   const gameTitles = await genresGameTitlesService.getGameTitlesByGenreIds({ genreIds });
   const gameTitleIds = gameTitles.map((item) => item.gameTitle_id);
 
   const recommended = await productsRepository.getRecommended({ platformId, gameTitleIds });
-  console.log(recommended);
+  return recommended;
+}
+
+async function getRelated({ id }) {
+  const product = await productsRepository.getById({ id });
+  const gameTitleId = product.gameTitle_id;
+  const genres = await genresGameTitlesService.getGenresByGameTitleId({ gameTitleId });
+  const genreIds = genres.map((item) => item.genre_id);
+  const gameTitles = await genresGameTitlesService.getGameTitlesByGenreIds({ genreIds });
+  const gameTitleIds = gameTitles.map((item) => item.gameTitle_id);
+  const recommended = await productsRepository.getRelated({ gameTitleIds, product });
   return recommended;
 }
 
@@ -47,4 +57,5 @@ export {
   getAll,
   getById,
   getRecommended,
+  getRelated,
 };
