@@ -12,7 +12,12 @@ async function getByEmail(req, res) {
   res.json(user);
 }
 
+async function getProfile(req, res) {
+  return res.json(req.user);
+}
+
 export {
   getById,
   getByEmail,
+  getProfile,
 };

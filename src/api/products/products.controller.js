@@ -12,7 +12,14 @@ async function getById(req, res) {
   res.json({ product });
 }
 
+async function getRecommended(req, res) {
+  const userId = req.user._id;
+  const products = await productsService.getRecommended({ userId });
+  res.json({ products });
+}
+
 export {
   getAll,
   getById,
+  getRecommended,
 };

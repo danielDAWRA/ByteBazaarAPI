@@ -5,13 +5,13 @@ async function getAll(req, res) {
   res.json(genres);
 }
 
-async function getGenreById(req, res) {
+async function getById(req, res) {
   const { id } = req.params;
-  const genre = await genresService.getGenreById(id);
+  const genre = await genresService.getById(id);
   res.json(genre);
 }
 
 export {
-  getGenreById,
+  getById,
   getAll,
 };

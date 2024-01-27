@@ -5,5 +5,6 @@ const router = Router();
 
 router.get('/all', productsController.getAll);
 router.get('/:id', productsController.getById);
+router.get('/recommended', productsController.getRecommended);
 
 export default router;

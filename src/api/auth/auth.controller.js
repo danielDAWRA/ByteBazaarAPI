@@ -5,17 +5,18 @@ async function login(req, res) {
 
   if (!email || !password) {
     res.status(400);
-    res.json('Email and password are required!');
+    res.json({ msg: 'Email and password are required!' });
     return;
   }
 
-  const token = await authService.login({ email, password });
-  if (!token) {
-    res.status(400);
-    res.json({ msg: 'Wrong Credidentials' });
-    return;
+  try {
+    const token = await authService.login({ email, password });
+    res.json({ token });
+  } catch (error) {
+    const myError = JSON.parse(error.message);
+    res.status(myError.code);
+    res.json({ msg: myError.msg });
   }
-  res.json({ token });
 }
 
 function isValidEmail(email) {
