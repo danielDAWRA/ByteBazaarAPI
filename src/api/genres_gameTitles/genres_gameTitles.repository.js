@@ -15,20 +15,9 @@ async function create(gameTitleId, genreId) {
   return newRelation;
 }
 
-async function findByGenreAndTitle(genreId, titleId) {
-  const foundGenreTitleRelation = await Genre_GameTitleModel
-    .findOne({ genre_id: genreId, gameTitle_id: titleId });
-  return foundGenreTitleRelation;
-}
-
 async function findManyByGenreAndTitle(relationsArray) {
   const relations = await Genre_GameTitleModel.find({ $or: relationsArray });
   return relations;
-}
-
-async function createMany(genreAndTitleRelations) {
-  const newRelations = Genre_GameTitleModel.insertMany(genreAndTitleRelations);
-  return newRelations;
 }
 
 async function upsertMany(relationsArray) {
@@ -46,8 +35,6 @@ async function upsertMany(relationsArray) {
 export {
   create,
   getAll,
-  findByGenreAndTitle,
   findManyByGenreAndTitle,
-  createMany,
   upsertMany,
 };
