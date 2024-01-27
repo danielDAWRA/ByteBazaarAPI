@@ -5,7 +5,17 @@ async function getById({ id }) {
   return user;
 }
 
+async function updateCredit({ user, paymentMethod, total }) {
+  const currentCredit = user[paymentMethod];
+  if (total > currentCredit) {
+    return 'Insufficient funds';
+  }
+  const updatedUserData = await usersRepository.updateCredit({ user, paymentMethod, total });
+  const updatedCredit = updatedUserData[paymentMethod];
+  return updatedCredit;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
+  updateCredit,
 };

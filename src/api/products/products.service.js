@@ -2,6 +2,7 @@ import * as productsRepository from './products.repository.js';
 import * as orderProductsService from '../orderProducts/orderProducts.service.js';
 import * as ordersService from '../orders/orders.service.js';
 import * as genresGameTitlesService from '../genres_gameTitles/genres_gameTitles.service.js';
+import * as usersService from '../users/users.service.js';
 
 async function getAll({ skip, limit }) {
   const products = await productsRepository.getAll({ skip, limit });
@@ -43,20 +44,80 @@ async function getRecommended({ userId }) {
   return recommended;
 }
 
-async function getPriceById({ id }) {
-  const price = await productsRepository.getPriceById({ id });
-  return price;
+function getProductIds({ products }) {
+  const productIdsArray = [];
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    const { productId } = product;
+    productIdsArray.push(productId);
+  }
+  return productIdsArray;
 }
 
-async function updateStock({ id, quantity }) {
-  const currentStock = await productsRepository.updateStock({ id, quantity });
-  return currentStock;
+function addDataToProducts({ products, pricesAndStock }) {
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    for (let j = 0; j < pricesAndStock.length; j++) {
+      const priceAndStock = pricesAndStock[j];
+      if (product.productId === priceAndStock._id.valueOf()) {
+        product.price = priceAndStock.price;
+        product.stock = priceAndStock.stock;
+      }
+    }
+  }
+  return products;
+}
+
+function isInsufficentStock({ products }) {
+  const insufficientStock = [];
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    if (product.quantity > product.stock) {
+      insufficientStock.push(product.productId);
+    }
+  }
+  return insufficientStock;
+}
+
+function getOrderTotal({ products }) {
+  let total = 0;
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    total += product.price * product.quantity;
+  }
+  return total;
+}
+
+async function buy({ orderData, user }) {
+  const { products } = orderData;
+  const productIds = getProductIds({ products });
+  const pricesAndStock = await productsRepository.getPricesAndStockById({ productIds });
+  addDataToProducts({ products, pricesAndStock });
+  const insufficientStock = isInsufficentStock({ products });
+  if (insufficientStock.length) {
+    const result = { error: insufficientStock };
+    return result;
+  }
+  const total = getOrderTotal({ products });
+  const { paymentMethod } = orderData;
+  const updatedCredit = await usersService.updateCredit({ user, paymentMethod, total });
+  if (typeof updatedCredit === 'string') {
+    return updatedCredit;
+  }
+  await productsRepository.updateStock({ products });
+  const userId = user._id;
+  const orderId = await ordersService.log({ userId, total });
+  await orderProductsService.log({ orderId, products });
+  const result = {
+    products,
+    updatedCredit,
+  };
+  return result;
 }
 
 export {
   getAll,
   getById,
   getRecommended,
-  getPriceById,
-  updateStock,
+  buy,
 };

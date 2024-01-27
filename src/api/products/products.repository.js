@@ -30,27 +30,29 @@ async function getRecommended({ platformId, gameTitleIds }) {
   return recommendedProducts;
 }
 
-async function getPriceById({ id }) {
-  const priceData = await productsModel.findById(id)
-    .select('price -_id')
+async function getPricesAndStockById({ productIds }) {
+  const pricesAndStock = await productsModel
+    .find({ _id: { $in: productIds } })
+    .select('price stock')
     .lean();
-  const { price } = priceData;
-  return price;
+  return pricesAndStock;
 }
 
-async function updateStock({ id, quantity }) {
-  const currentStock = await productsModel
-    .findByIdAndUpdate(
-      { _id: id },
-      { inc$: { stock: -2 } },
-    );
-  return currentStock;
+async function updateStock({ products }) {
+  const productsBulk = products.map((product) => ({
+    updateOne: {
+      filter: { _id: product.productId },
+      update: { $inc: { stock: -product.quantity } },
+    },
+  }));
+  const res = await productsModel.bulkWrite(productsBulk);
+  return res;
 }
 
 export {
   getAll,
   getById,
   getRecommended,
-  getPriceById,
+  getPricesAndStockById,
   updateStock,
 };

@@ -12,8 +12,25 @@ async function getRecommended(req, res) {
   res.json({ products });
 }
 
+async function buy(req, res) {
+  const { body } = req;
+  const { user } = req;
+  const result = await productsService.buy({ orderData: body, user });
+  if (result.error) {
+    return res.json({
+      msg: 'There is not enough stock of the following item/s to complete your order',
+      products: result.error,
+    });
+  }
+  if (typeof result === 'string') {
+    res.status(400);
+    return res.json({ msg: result });
+  }
+  return res.json(result);
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getAll,
   getRecommended,
+  buy,
 };

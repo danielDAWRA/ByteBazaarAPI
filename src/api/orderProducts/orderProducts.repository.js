@@ -10,7 +10,12 @@ async function getProductGameTitleFromOrder({ orderId }) {
   return productGameTitleFromOrder;
 }
 
+async function log({ products }) {
+  const res = orderProductsModel.insertMany(products);
+  return res;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getProductGameTitleFromOrder,
+  log,
 };
