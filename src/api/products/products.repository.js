@@ -14,8 +14,8 @@ async function getAll({ skip, limit }) {
 }
 
 async function getById({ id }) {
-  const user = await ProductsModel.findById(id).lean();
-  return user;
+  const product = await ProductsModel.findById(id).lean();
+  return product;
 }
 
 async function getRecommended({ platformId, gameTitleIds }) {
