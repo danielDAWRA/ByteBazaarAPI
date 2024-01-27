@@ -5,12 +5,12 @@ async function getAll() {
   return genres;
 }
 
-async function getGenreById(id) {
-  const genre = await genresRepository.getGenreById(id);
+async function getById(id) {
+  const genre = await genresRepository.getById(id);
   return genre;
 }
 
 export {
-  getGenreById,
+  getById,
   getAll,
 };

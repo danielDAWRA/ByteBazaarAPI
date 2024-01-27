@@ -11,7 +11,21 @@ async function getGameTitlesByGenreIds({ genreIds }) {
   return gameTitles;
 }
 
+async function findManyByGenreAndTitle(relationsArray) {
+  const relations = await genresGameTitlesRepository
+    .findManyByGenreAndTitle(relationsArray);
+  return relations;
+}
+
+async function upsertMany(relationsArray) {
+  const res = await genresGameTitlesRepository
+    .upsertMany(relationsArray);
+  return res;
+}
+
 export {
   getGenresByGameTitleId,
   getGameTitlesByGenreIds,
+  findManyByGenreAndTitle,
+  upsertMany,
 };
