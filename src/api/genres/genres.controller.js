@@ -1,10 +1,17 @@
 import * as genresService from './genres.service.js';
 
-async function getGenreById(req, res) {
+async function getAll(req, res) {
+  const genres = await genresService.getAll();
+  res.json(genres);
+}
+
+async function getById(req, res) {
   const { id } = req.params;
-  const genre = await genresService.getGenreById(id);
+  const genre = await genresService.getById(id);
   res.json(genre);
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { getGenreById };
+export {
+  getById,
+  getAll,
+};

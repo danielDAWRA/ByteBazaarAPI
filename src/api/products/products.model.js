@@ -6,10 +6,12 @@ const productsSchema = new Schema({
   gameTitle_id: {
     type: ObjectId,
     required: true,
+    ref: 'GameTitle',
   },
   platform_id: {
     type: ObjectId,
     required: true,
+    ref: 'Platform',
   },
   stock: {
     type: Number,
@@ -25,5 +27,5 @@ const productsSchema = new Schema({
   },
 });
 
-const productModel = model('Product', productsSchema);
+const productModel = model('product', productsSchema);
 export default productModel;
