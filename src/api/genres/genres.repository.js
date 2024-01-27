@@ -1,17 +1,17 @@
-import genreModel from './genres.model.js';
+import GenreModel from './genres.model.js';
 
 async function getAll() {
-  const genres = await genreModel.find({}).lean();
+  const genres = await GenreModel.find({}).lean();
   return genres;
 }
 
 async function getById(id) {
-  const genre = await genreModel.findById(id).lean();
+  const genre = await GenreModel.findById(id).lean();
   return genre;
 }
 
 async function getByNames(genresNames) {
-  const genres = await genreModel.find({ name: { $in: genresNames } });
+  const genres = await GenreModel.find({ name: { $in: genresNames } });
   return genres;
 }
 
@@ -23,7 +23,7 @@ async function upsertMany(genres) {
       upsert: true,
     },
   }));
-  const res = await genreModel.bulkWrite(genresBulk);
+  const res = await GenreModel.bulkWrite(genresBulk);
   return res;
 }
 

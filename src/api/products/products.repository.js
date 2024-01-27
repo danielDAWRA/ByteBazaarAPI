@@ -1,7 +1,7 @@
-import productsModel from './products.model.js';
+import ProductsModel from './products.model.js';
 
 async function getAll({ skip, limit }) {
-  const products = await productsModel
+  const products = await ProductsModel
     .find({})
     .select('stock price')
     .populate({ path: 'gameTitle_id', select: '-_id -description' })
@@ -14,12 +14,12 @@ async function getAll({ skip, limit }) {
 }
 
 async function getById({ id }) {
-  const user = await productsModel.findById(id).lean();
+  const user = await ProductsModel.findById(id).lean();
   return user;
 }
 
 async function getRecommended({ platformId, gameTitleIds }) {
-  const recommendedProducts = await productsModel
+  const recommendedProducts = await ProductsModel
     .find({
       platform_id: platformId,
       gameTitle_id: { $in: gameTitleIds },
@@ -30,7 +30,7 @@ async function getRecommended({ platformId, gameTitleIds }) {
 }
 
 const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
-  const relatedProducts = await productsModel
+  const relatedProducts = await ProductsModel
     .aggregate([
       { $match: { _id: { $ne: product }, gameTitle_id: { $in: gameTitleIds } } },
       { $sample: { size: limit } },

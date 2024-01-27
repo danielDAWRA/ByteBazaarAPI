@@ -1,18 +1,18 @@
-import genresGameTitleModel from './genres_gameTitles.model.js';
+import GenresGameTitleModel from './genres_gameTitles.model.js';
 
 async function getGenresByGameTitleId({ gameTitleId }) {
-  const genres = await genresGameTitleModel.find({ gameTitle_id: gameTitleId })
+  const genres = await GenresGameTitleModel.find({ gameTitle_id: gameTitleId })
     .select({ genre_id: 1, _id: 0 });
   return genres;
 }
 
 async function getGameTitlesByGenreIds({ genreIds }) {
-  const gameTitles = await genresGameTitleModel.find({ genre_id: { $in: genreIds } });
+  const gameTitles = await GenresGameTitleModel.find({ genre_id: { $in: genreIds } });
   return gameTitles;
 }
 
 async function findManyByGenreAndTitle(relationsArray) {
-  const relations = await genresGameTitleModel.find({ $or: relationsArray });
+  const relations = await GenresGameTitleModel.find({ $or: relationsArray });
   return relations;
 }
 
@@ -24,7 +24,7 @@ async function upsertMany(relationsArray) {
       upsert: true,
     },
   }));
-  const res = await genresGameTitleModel.bulkWrite(relationsArrayBulk);
+  const res = await GenresGameTitleModel.bulkWrite(relationsArrayBulk);
   return res;
 }
 
