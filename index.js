@@ -9,7 +9,7 @@ const { PORT } = process.env;
 
 server.use(express.json());
 server.use(cors({ origin: true }));
-// server.use(isLogged); // TODO: UNCOMMENT BEFORE PUSHING !!!!
+server.use(isLogged);
 server.use(apiRouter);
 server.listen(PORT, () => {
   // eslint-disable-next-line no-console
