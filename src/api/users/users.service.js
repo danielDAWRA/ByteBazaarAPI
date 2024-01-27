@@ -5,6 +5,11 @@ async function getById({ id }) {
   return user;
 }
 
+async function getByEmail({ email }) {
+  const user = await usersRepository.getByEmail({ email });
+  return user;
+}
+
 async function updateCredit({ user, paymentMethod, total }) {
   const currentCredit = user[paymentMethod];
   if (total > currentCredit) {
@@ -17,5 +22,6 @@ async function updateCredit({ user, paymentMethod, total }) {
 
 export {
   getById,
+  getByEmail,
   updateCredit,
 };

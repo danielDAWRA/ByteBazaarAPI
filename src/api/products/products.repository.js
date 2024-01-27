@@ -14,8 +14,8 @@ async function getAll({ skip, limit }) {
 }
 
 async function getById({ id }) {
-  const user = await productsModel.findById(id).lean();
-  return user;
+  const product = await productsModel.findById(id).lean();
+  return product;
 }
 
 async function getRecommended({ platformId, gameTitleIds }) {
@@ -26,9 +26,19 @@ async function getRecommended({ platformId, gameTitleIds }) {
     })
     .sort({ listedDate: -1 })
     .lean();
-
   return recommendedProducts;
 }
+
+const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
+  const relatedProducts = await productsModel
+    .aggregate([
+      { $match: { _id: { $ne: product }, gameTitle_id: { $in: gameTitleIds } } },
+      { $sample: { size: limit } },
+    ])
+    .exec();
+
+  return relatedProducts;
+};
 
 async function getPricesAndStockById({ productIds }) {
   const pricesAndStock = await productsModel
@@ -53,6 +63,7 @@ export {
   getAll,
   getById,
   getRecommended,
+  getRelated,
   getPricesAndStockById,
   updateStock,
 };

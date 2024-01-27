@@ -6,11 +6,18 @@ async function getById(req, res) {
   res.json(user);
 }
 
+async function getByEmail(req, res) {
+  const { email } = req.params;
+  const user = await usersService.getByEmail({ email });
+  res.json(user);
+}
+
 async function getProfile(req, res) {
   return res.json(req.user);
 }
 
 export {
   getById,
+  getByEmail,
   getProfile,
 };

@@ -5,6 +5,11 @@ async function getById({ id }) {
   return user;
 }
 
+async function getByEmail({ email }) {
+  const user = await userModel.findOne({ email }).lean();
+  return user;
+}
+
 async function register({ user }) {
   const createdUser = await userModel.create(user);
   return createdUser;
@@ -26,6 +31,7 @@ async function updateCredit({ user, paymentMethod, total }) {
 
 export {
   getById,
+  getByEmail,
   register,
   validate,
   updateCredit,

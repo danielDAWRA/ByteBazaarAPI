@@ -6,9 +6,21 @@ async function getAll(req, res) {
   res.json({ products });
 }
 
+async function getById(req, res) {
+  const { id } = req.params;
+  const product = await productsService.getById({ id });
+  res.json({ product });
+}
+
 async function getRecommended(req, res) {
   const userId = req.user._id;
   const products = await productsService.getRecommended({ userId });
+  res.json({ products });
+}
+
+async function getRelated(req, res) {
+  const { id } = req.params;
+  const products = await productsService.getRelated({ id });
   res.json({ products });
 }
 
@@ -31,6 +43,8 @@ async function buy(req, res) {
 
 export {
   getAll,
+  getById,
   getRecommended,
+  getRelated,
   buy,
 };
