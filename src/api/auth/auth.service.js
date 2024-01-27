@@ -1,4 +1,4 @@
-import { hashSync } from 'bcrypt';
+import { compareSync, hashSync } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as usersRepository from '../users/users.repository.js';
 import transporter from '../nodemailer.js';
@@ -7,18 +7,37 @@ function getToken({ userId, timeout }) {
   const payload = {
     userId,
   };
+
   const { TOKEN_SECRET_WORD } = process.env;
   const options = {
     expiresIn: timeout,
   };
+
   const token = jwt.sign(payload, TOKEN_SECRET_WORD, options);
   return token;
 }
 
+async function login({ email, password }) {
+  const user = await usersRepository.getByEmail({ email });
+
+  if (!user || !compareSync(password, user.password)) {
+    const myError = {
+      code: 401,
+      msg: 'Wrong login information',
+    };
+
+    throw new Error(JSON.stringify(myError));
+  }
+
+  const { TOKEN_TIMEOUT } = process.env;
+  const token = getToken({ userId: user._id, timeout: TOKEN_TIMEOUT });
+  return token;
+}
+
 async function sendEmail({ email }) {
-  const { EMAIL_TIMEOUT } = process.env;
+  const { EMAIL_TIMEOUT, PORT } = process.env;
   const emailToken = getToken({ userId: email, timeout: EMAIL_TIMEOUT });
-  const validatePath = 'http://localhost:3000/auth/validate/';
+  const validatePath = `http://localhost:${PORT}/auth/validate/`;
   const url = validatePath + emailToken;
   await transporter.sendMail({
     to: email,
@@ -50,4 +69,5 @@ async function validate({ emailToken }) {
 export {
   register,
   validate,
+  login,
 };
