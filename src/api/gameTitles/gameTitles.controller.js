@@ -6,8 +6,8 @@ async function getById(req, res) {
   res.json(gameTitles);
 }
 
-async function getAllTitles(req, res) {
-  const gameTitles = await gameTitlesService.getAllTitles();
+async function getAll(req, res) {
+  const gameTitles = await gameTitlesService.getAll();
   res.json(gameTitles);
 }
 
@@ -17,14 +17,14 @@ async function getByProductId(req, res) {
   res.json(gameTitles);
 }
 
-async function createTitle(req, res) {
-  const newTitleAndGenreRelation = await gameTitlesService.createTitle(req.body);
+async function create(req, res) {
+  const newTitleAndGenreRelation = await gameTitlesService.create(req.body);
   res.json(newTitleAndGenreRelation);
 }
 
 export {
   getById,
-  getAllTitles,
+  getAll,
   getByProductId,
-  createTitle,
+  create,
 };

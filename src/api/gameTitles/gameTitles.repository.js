@@ -5,7 +5,7 @@ async function getById({ id }) {
   return gameTitle;
 }
 
-async function getAllTitles() {
+async function getAll() {
   const gameTitles = await GameTitleModel.find();
   return gameTitles;
 }
@@ -20,7 +20,7 @@ async function getByTitle(title) {
   return gameTitle;
 }
 
-async function createTitle(newTitleData) {
+async function create(newTitleData) {
   const newTitle = new GameTitleModel(newTitleData);
   await newTitle.save();
   return newTitle;
@@ -28,8 +28,8 @@ async function createTitle(newTitleData) {
 
 export {
   getById,
-  getAllTitles,
+  getAll,
   getByProductId,
   getByTitle,
-  createTitle,
+  create,
 };

@@ -4,6 +4,6 @@ import * as genresController from './genres.controller.js';
 const router = Router();
 
 router.get('/all', genresController.getAll);
-router.get('/:id', genresController.getGenreById);
+router.get('/:id', genresController.getById);
 
 export default router;
