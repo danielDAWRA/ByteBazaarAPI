@@ -1,16 +1,17 @@
-/* eslint-disable camelcase */
 import { Schema, model } from 'mongoose';
 
-const schema = new Schema({
-  gameTitle_id: {
-    type: Schema.Types.ObjectId,
-    ref: 'GameTitle',
-  },
+const { ObjectId } = Schema.Types;
+
+const genresGametitlesSchema = new Schema({
   genre_id: {
-    type: Schema.Types.ObjectId,
+    type: ObjectId,
     ref: 'Genre',
+  },
+  gameTitle_id: {
+    type: ObjectId,
+    ref: 'GameTitle',
   },
 });
 
-const Genre_GameTitleModel = model('Genre_GameTitle', schema, 'genres_gameTitles');
-export default Genre_GameTitleModel;
+const genresGameTitlesModel = model('genres_gameTitles', genresGametitlesSchema, 'genres_gameTitles');
+export default genresGameTitlesModel;

@@ -1,8 +1,7 @@
-/* eslint-disable camelcase */
 import * as gameTitlesRepository from './gameTitles.repository.js';
 import * as productsService from '../products/products.service.js';
 import * as genresRepository from '../genres/genres.repository.js';
-import * as genres_gameTitlesRepository from '../genres_gameTitles/genres_gameTitles.repository.js';
+import * as genresGameTitlesService from '../genres_gameTitles/genres_gameTitles.service.js';
 
 async function getById({ id }) {
   const gameTitles = await gameTitlesRepository.getById({ id });
@@ -49,7 +48,7 @@ async function create(newTitleData) {
     gameTitle_id: titleUpsert._id,
     genre_id: g,
   }));
-  const newRelations = await genres_gameTitlesRepository
+  const newRelations = await genresGameTitlesService
     .upsertMany(relationsArray);
   created.genre_gameTitleRelation.push(...Object.values(newRelations.upsertedIds));
   return { created };
