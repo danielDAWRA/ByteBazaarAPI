@@ -38,6 +38,12 @@ async function register(req, res) {
     res.json({ msg: 'Both passwords must match.' });
     return;
   }
+  const existingUser = await authService.isExistingUser({ email });
+  if (existingUser) {
+    res.status(400);
+    res.json({ msg: 'The email address you have entered is already associated with an account' });
+    return;
+  }
   const token = await authService.register({ newUser: req.body });
   res.json({ msg: 'We have just sent you a confirmation email—please check your inbox.', token });
 }
