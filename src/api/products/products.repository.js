@@ -27,8 +27,18 @@ async function getPriceById({ id }) {
   return price;
 }
 
+async function updateStock({ id, quantity }) {
+  const currentStock = await productsModel
+    .findByIdAndUpdate(
+      { _id: id },
+      { inc$: { stock: -2 } },
+    );
+  return currentStock;
+}
+
 export {
   getAll,
   getById,
   getPriceById,
+  updateStock,
 };

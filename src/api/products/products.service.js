@@ -15,8 +15,14 @@ async function getPriceById({ id }) {
   return price;
 }
 
+async function updateStock({ id, quantity }) {
+  const currentStock = await productsRepository.updateStock({ id, quantity });
+  return currentStock;
+}
+
 export {
   getAll,
   getById,
   getPriceById,
+  updateStock,
 };
