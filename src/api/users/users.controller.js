@@ -7,7 +7,7 @@ async function getById(req, res) {
 }
 
 async function getProfile(req, res) {
-  return res.json({ user: req.user });
+  return res.json(req.user);
 }
 
 export {
