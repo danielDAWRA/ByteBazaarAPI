@@ -15,11 +15,23 @@ async function getAll({ skip, limit }) {
 
 async function getById({ id }) {
   const user = await productsModel.findById(id).lean();
-  console.log('user', user);
   return user;
+}
+
+async function getRecommended({ platformId, gameTitleIds }) {
+  const recommendedProducts = await productsModel
+    .find({
+      platform_id: platformId,
+      gameTitle_id: { $in: gameTitleIds },
+    })
+    .sort({ listedDate: -1 })
+    .lean();
+
+  return recommendedProducts;
 }
 
 export {
   getAll,
   getById,
+  getRecommended,
 };
