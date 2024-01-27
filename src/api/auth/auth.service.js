@@ -46,6 +46,11 @@ async function sendEmail({ email }) {
   });
 }
 
+async function isExistingUser({ email }) {
+  const existingUser = await usersRepository.getByEmail({ email });
+  return existingUser;
+}
+
 async function register({ newUser }) {
   const { password } = newUser;
   const intSaltOrRoundsHash = parseInt(process.env.SALT_OR_ROUNDS_HASH);
@@ -70,4 +75,5 @@ export {
   register,
   validate,
   login,
+  isExistingUser,
 };
