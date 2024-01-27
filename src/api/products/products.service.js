@@ -39,28 +39,18 @@ async function getRecommended({ userId }) {
   const gameTitleIds = gameTitles.map((item) => item.gameTitle_id);
 
   const recommended = await productsRepository.getRecommended({ platformId, gameTitleIds });
-  console.log(recommended);
+  // console.log(recommended);
   return recommended;
 }
 
 async function getRelated({ id }) {
-  console.log('--id service: ', id);
   const product = await productsRepository.getById({ id });
-  const platformId = product.platform_id;
   const gameTitleId = product.gameTitle_id;
-  console.log('--products service: ', product);
-  console.log('--platformId service: ', platformId);
-  console.log('--gameTitleId service: ', gameTitleId);
   const genres = await genresGameTitlesService.getGenresByGameTitleId({ gameTitleId });
-  console.log('--genres service: ', genres);
   const genreIds = genres.map((item) => item.genre_id);
-  console.log('--genreIds service: ', genreIds);
   const gameTitles = await genresGameTitlesService.getGameTitlesByGenreIds({ genreIds });
-  console.log('--gameTitles service: ', gameTitles);
   const gameTitleIds = gameTitles.map((item) => item.gameTitle_id);
-  console.log('--gameTitleIds service: ', gameTitleIds);
-  const recommended = await productsRepository.getRelated({ platformId, gameTitleIds, product });
-  console.log('--recommended service: ', recommended);
+  const recommended = await productsRepository.getRelated({ gameTitleIds, product });
   return recommended;
 }
 
