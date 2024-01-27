@@ -21,8 +21,12 @@ async function login({ email, password }) {
   const user = await usersRepository.getByEmail({ email });
   let token;
 
-  if (!user || !password) {
-    throw new Error('User or password missing');
+  try {
+    if (!user || !password) {
+      throw new Error('User or password missing');
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
   }
 
   if (user && compareSync(password, user.password)) {
