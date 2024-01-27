@@ -6,8 +6,11 @@ async function getById(req, res) {
   res.json(user);
 }
 
-export {
+async function getProfile(req, res) {
+  return res.json(req.user);
+}
 
-  // eslint-disable-next-line import/prefer-default-export
+export {
   getById,
+  getProfile,
 };
