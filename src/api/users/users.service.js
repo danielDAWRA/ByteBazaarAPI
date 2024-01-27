@@ -5,7 +5,12 @@ async function getById({ id }) {
   return user;
 }
 
+async function getByEmail({ email }) {
+  const user = await usersRepository.getByEmail({ email });
+  return user;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getById,
+  getByEmail,
 };
