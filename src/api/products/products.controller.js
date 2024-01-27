@@ -12,8 +12,17 @@ async function getRecommended(req, res) {
   res.json({ products });
 }
 
+async function getRelated(req, res) {
+  // const { skip, limit } = req.query;
+  const { id } = req.params;
+  console.log('-id controller: ', id);
+  const products = await productsService.getRelated({ id });
+  console.log('-products controller: ', products);
+  res.json({ products });
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getAll,
   getRecommended,
+  getRelated,
 };

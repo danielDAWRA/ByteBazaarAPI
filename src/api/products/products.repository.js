@@ -26,12 +26,26 @@ async function getRecommended({ platformId, gameTitleIds }) {
     })
     .sort({ listedDate: -1 })
     .lean();
-
   return recommendedProducts;
+}
+
+async function getRelated({ platformId, gameTitleIds, product }) {
+  console.log('---Platform ID repo: ', platformId);
+  console.log('---Game Title IDs repo: ', gameTitleIds);
+  console.log('---Product ID repo: ', product);
+  const relatedProducts = await productsModel
+    .find({
+      _id: { $ne: product },
+      platform_id: platformId,
+      gameTitle_id: { $in: gameTitleIds },
+    }).limit(3);
+  console.log('---recommendedProducts repository: ', relatedProducts);
+  return relatedProducts;
 }
 
 export {
   getAll,
   getById,
   getRecommended,
+  getRelated,
 };
