@@ -29,15 +29,18 @@ async function getRecommended({ platformId, gameTitleIds }) {
   return recommendedProducts;
 }
 
-async function getRelated({ gameTitleIds, product }) {
+const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
+  // Obtener una muestra aleatoria de documentos limitada por la cantidad especificada
   const relatedProducts = await productsModel
-    .find({
-      _id: { $ne: product },
-      gameTitle_id: { $in: gameTitleIds },
-    });
+    .aggregate([
+      { $match: { _id: { $ne: product }, gameTitle_id: { $in: gameTitleIds } } },
+      { $sample: { size: limit } },
+    ])
+    .exec();
+
   console.log('---recommendedProducts repository: ', relatedProducts);
   return relatedProducts;
-}
+};
 
 export {
   getAll,
