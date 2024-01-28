@@ -29,10 +29,7 @@ async function buy(req, res) {
   const { user } = req;
   const result = await productsService.buy({ orderData: body, user });
   if (result.error) {
-    return res.json({
-      msg: 'There is not enough stock of the following item/s to complete your order',
-      products: result.error,
-    });
+    return res.json(result);
   }
   if (typeof result === 'string') {
     res.status(400);

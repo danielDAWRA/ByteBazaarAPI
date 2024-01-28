@@ -54,16 +54,6 @@ async function getRelated({ id }) {
   return recommended;
 }
 
-function getProductIds({ products }) {
-  const productIdsArray = [];
-  for (let i = 0; i < products.length; i++) {
-    const product = products[i];
-    const { productId } = product;
-    productIdsArray.push(productId);
-  }
-  return productIdsArray;
-}
-
 function addDataToProducts({ products, pricesAndStock }) {
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
@@ -78,17 +68,6 @@ function addDataToProducts({ products, pricesAndStock }) {
   return products;
 }
 
-function isInsufficentStock({ products }) {
-  const insufficientStock = [];
-  for (let i = 0; i < products.length; i++) {
-    const product = products[i];
-    if (product.quantity > product.stock) {
-      insufficientStock.push(product.productId);
-    }
-  }
-  return insufficientStock;
-}
-
 function getOrderTotal({ products }) {
   let total = 0;
   for (let i = 0; i < products.length; i++) {
@@ -100,12 +79,15 @@ function getOrderTotal({ products }) {
 
 async function buy({ orderData, user }) {
   const { products } = orderData;
-  const productIds = getProductIds({ products });
+  const productIds = products.map((product) => product.productId);
   const pricesAndStock = await productsRepository.getPricesAndStockById({ productIds });
   addDataToProducts({ products, pricesAndStock });
-  const insufficientStock = isInsufficentStock({ products });
-  if (insufficientStock.length) {
-    const result = { error: insufficientStock };
+  const isInsufficentStock = products.filter((product) => product.quantity > product.stock);
+  if (isInsufficentStock.length) {
+    const result = {
+      msg: 'There is not enough stock of the following item/s to complete your order:',
+      error: isInsufficentStock,
+    };
     return result;
   }
   const total = getOrderTotal({ products });
