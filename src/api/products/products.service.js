@@ -68,15 +68,6 @@ function addDataToProducts({ products, pricesAndStock }) {
   return products;
 }
 
-function getOrderTotal({ products }) {
-  let total = 0;
-  for (let i = 0; i < products.length; i++) {
-    const product = products[i];
-    total += product.price * product.quantity;
-  }
-  return total;
-}
-
 async function buy({ orderData, user }) {
   const { products } = orderData;
   const productIds = products.map((product) => product.productId);
@@ -90,19 +81,25 @@ async function buy({ orderData, user }) {
     };
     return result;
   }
-  const total = getOrderTotal({ products });
   const { paymentMethod } = orderData;
+  let total = 0;
+  products.forEach((product) => {
+    const productTotal = product.price * product.quantity;
+    total += productTotal;
+  });
   const updatedCredit = await usersService.updateCredit({ user, paymentMethod, total });
-  if (typeof updatedCredit === 'string') {
+  if (updatedCredit.error) {
     return updatedCredit;
   }
   await productsRepository.updateStock({ products });
   const userId = user._id;
   const orderId = await ordersService.log({ userId, total });
   await orderProductsService.log({ orderId, products });
+  // eslint-disable-next-line no-param-reassign
+  products.forEach((product) => delete product.stock);
   const result = {
     products,
-    updatedCredit,
+    [paymentMethod]: updatedCredit,
   };
   return result;
 }

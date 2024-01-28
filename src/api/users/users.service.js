@@ -13,7 +13,13 @@ async function getByEmail({ email }) {
 async function updateCredit({ user, paymentMethod, total }) {
   const currentCredit = user[paymentMethod];
   if (total > currentCredit) {
-    return 'Insufficient funds';
+    const result = {
+      msg: 'Insufficient funds.',
+      error: {
+        [paymentMethod]: currentCredit,
+      },
+    };
+    return result;
   }
   const updatedUserData = await usersRepository.updateCredit({ user, paymentMethod, total });
   const updatedCredit = updatedUserData[paymentMethod];

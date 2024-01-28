@@ -29,11 +29,8 @@ async function buy(req, res) {
   const { user } = req;
   const result = await productsService.buy({ orderData: body, user });
   if (result.error) {
-    return res.json(result);
-  }
-  if (typeof result === 'string') {
     res.status(400);
-    return res.json({ msg: result });
+    return res.json(result);
   }
   return res.json(result);
 }
