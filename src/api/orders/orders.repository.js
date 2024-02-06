@@ -8,7 +8,13 @@ async function getOrdersByUserId({ userId }) {
   return orders;
 }
 
+async function log({ userId, total }) {
+  const order = await ordersModel.create({ user_id: userId, total });
+  const { _id } = order;
+  return _id;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getOrdersByUserId,
+  log,
 };

@@ -24,9 +24,21 @@ async function getRelated(req, res) {
   res.json({ products });
 }
 
+async function buy(req, res) {
+  const { body } = req;
+  const { user } = req;
+  const result = await productsService.buy({ orderData: body, user });
+  if (result.error) {
+    res.status(400);
+    return res.json(result);
+  }
+  return res.json(result);
+}
+
 export {
   getAll,
   getById,
   getRecommended,
   getRelated,
+  buy,
 };

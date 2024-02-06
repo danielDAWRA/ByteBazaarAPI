@@ -5,7 +5,12 @@ async function getOrdersByUserId({ userId }) {
   return orders;
 }
 
+async function log({ userId, total }) {
+  const orderId = await ordersRepository.log({ userId, total });
+  return orderId;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getOrdersByUserId,
+  log,
 };

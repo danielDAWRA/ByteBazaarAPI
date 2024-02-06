@@ -40,9 +40,30 @@ const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
   return relatedProducts;
 };
 
+async function getPricesAndStockById({ productIds }) {
+  const pricesAndStock = await productsModel
+    .find({ _id: { $in: productIds } })
+    .select('price stock')
+    .lean();
+  return pricesAndStock;
+}
+
+async function updateStock({ products }) {
+  const productsBulk = products.map((product) => ({
+    updateOne: {
+      filter: { _id: product.productId },
+      update: { $inc: { stock: -product.quantity } },
+    },
+  }));
+  const res = await productsModel.bulkWrite(productsBulk);
+  return res;
+}
+
 export {
   getAll,
   getById,
   getRecommended,
   getRelated,
+  getPricesAndStockById,
+  updateStock,
 };

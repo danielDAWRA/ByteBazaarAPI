@@ -20,9 +20,19 @@ async function validate({ email }) {
   return user;
 }
 
+async function updateCredit({ user, paymentMethod, total }) {
+  const updatedUserData = await userModel.findOneAndUpdate(
+    { _id: user._id },
+    { $inc: { [paymentMethod]: -total } },
+    { new: true },
+  );
+  return updatedUserData;
+}
+
 export {
   getById,
   getByEmail,
   register,
   validate,
+  updateCredit,
 };
