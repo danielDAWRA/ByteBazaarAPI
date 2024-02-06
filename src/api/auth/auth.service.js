@@ -34,6 +34,11 @@ async function login({ email, password }) {
   return token;
 }
 
+async function isExistingUser({ email }) {
+  const existingUser = await usersRepository.getByEmail({ email });
+  return existingUser;
+}
+
 async function sendEmail({ email }) {
   const { EMAIL_TIMEOUT, PORT } = process.env;
   const emailToken = getToken({ userId: email, timeout: EMAIL_TIMEOUT });
@@ -70,4 +75,5 @@ export {
   register,
   validate,
   login,
+  isExistingUser,
 };
