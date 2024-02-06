@@ -32,6 +32,11 @@ function isLogged(req, res, next) {
       return;
     }
     const user = await userService.getById({ id: payload.userId });
+    if (!user.validated) {
+      res.status(401);
+      res.json({ msg: 'Please confirm your email address' });
+      return;
+    }
     req.user = user;
     next();
   });
