@@ -13,5 +13,5 @@ const genresGametitlesSchema = new Schema({
   },
 });
 
-const genresGameTitlesModel = model('genres_gameTitles', genresGametitlesSchema, 'genres_gameTitles');
+const genresGameTitlesModel = model('Genres_gameTitles', genresGametitlesSchema, 'genres_gameTitles');
 export default genresGameTitlesModel;

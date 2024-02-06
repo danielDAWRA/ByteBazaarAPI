@@ -1,7 +1,7 @@
-import orderProductsModel from './orderProducts.model.js';
+import OrderProductsModel from './orderProducts.model.js';
 
 async function getProductGameTitleFromOrder({ orderId }) {
-  const productGameTitleFromOrder = await orderProductsModel
+  const productGameTitleFromOrder = await OrderProductsModel
     .findOne({ orderId })
     .populate({
       path: 'productId',
