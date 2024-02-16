@@ -41,7 +41,7 @@ const getRelated = async ({ gameTitleIds, product, limit = 3 }) => {
 };
 
 async function getPricesAndStockById({ productIds }) {
-  const pricesAndStock = await productsModel
+  const pricesAndStock = await ProductsModel
     .find({ _id: { $in: productIds } })
     .select('price stock')
     .lean();
@@ -55,7 +55,7 @@ async function updateStock({ products }) {
       update: { $inc: { stock: -product.quantity } },
     },
   }));
-  const res = await productsModel.bulkWrite(productsBulk);
+  const res = await ProductsModel.bulkWrite(productsBulk);
   return res;
 }
 
