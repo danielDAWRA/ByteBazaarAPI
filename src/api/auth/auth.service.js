@@ -40,10 +40,9 @@ async function isExistingUser({ email }) {
 }
 
 async function sendEmail({ email }) {
-  const { EMAIL_TIMEOUT, PORT } = process.env;
+  const { EMAIL_TIMEOUT, SERVER_URL } = process.env;
   const emailToken = getToken({ userId: email, timeout: EMAIL_TIMEOUT });
-  const validatePath = `http://localhost:${PORT}/auth/validate/`;
-  const url = validatePath + emailToken;
+  const url = `${SERVER_URL}auth/validate/${emailToken}`;
   await transporter.sendMail({
     to: email,
     subject: 'Confirm registration',
