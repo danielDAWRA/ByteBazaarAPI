@@ -11,8 +11,9 @@ function isLogged(req, res, next) {
     '/auth/login',
     '/auth/register',
     '/auth/validate',
-    '/products/:id',
+    '/products/',
     '/products/all',
+    '/gameTitles/productId/',
   ];
   const isPublicRoute = publicRoutes.some((publicRoute) => req.url.startsWith(publicRoute));
   if (isPublicRoute) {
