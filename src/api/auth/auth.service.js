@@ -31,7 +31,12 @@ async function login({ email, password }) {
 
   const { TOKEN_TIMEOUT } = process.env;
   const token = getToken({ userId: user._id, timeout: TOKEN_TIMEOUT });
-  return token;
+
+  const formattedUser = { ...user };
+  delete formattedUser.password;
+  delete formattedUser.credit;
+
+  return { token, user: formattedUser };
 }
 
 async function isExistingUser({ email }) {

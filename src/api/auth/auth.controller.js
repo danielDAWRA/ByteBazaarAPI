@@ -10,8 +10,8 @@ async function login(req, res) {
   }
 
   try {
-    const token = await authService.login({ email, password });
-    res.json({ token });
+    const userInfo = await authService.login({ email, password });
+    res.json(userInfo);
   } catch (error) {
     const myError = JSON.parse(error.message);
     res.status(myError.code);
