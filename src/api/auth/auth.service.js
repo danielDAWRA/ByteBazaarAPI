@@ -36,7 +36,7 @@ async function login({ email, password }) {
   delete formattedUser.password;
   delete formattedUser.credit;
 
-  return { token, user: formattedUser };
+  return { token, user: JSON.stringify(formattedUser) };
 }
 
 async function isExistingUser({ email }) {
