@@ -20,6 +20,7 @@ async function getByProductId(productId) {
   return gameTitles;
 }
 
+
 async function create(newTitleData) {
   const {
     title, description, image, genres,
