@@ -10,8 +10,13 @@ async function register({ user }) {
   return createdUser;
 }
 
-async function validate({ email }) {
-  const user = await userModel.findOneAndUpdate({ email }, { validated: true });
+async function validate({ email, validated = true }) {
+  const user = await userModel.findOneAndUpdate({ email }, { validated });
+  return user;
+}
+
+async function patch({ _id, newProps }) {
+  const user = await userModel.findOneAndUpdate({ _id }, newProps, { new: true });
   return user;
 }
 
@@ -19,4 +24,5 @@ export {
   getById,
   register,
   validate,
+  patch,
 };

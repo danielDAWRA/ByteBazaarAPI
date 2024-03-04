@@ -6,8 +6,23 @@ async function getById(req, res) {
   res.json(user);
 }
 
-export {
+async function patch(req, res) {
+  const { user } = req;
+  const newProps = req.body;
+  // We only let user change his name,lastName and password fields
+  // and delete other fields in case they come in the body
+  const {
+    email,
+    credit,
+    idAdmin,
+    ...allowedChanges
+  } = newProps;
 
-  // eslint-disable-next-line import/prefer-default-export
+  const userUpdatedValues = await usersService.patch({ user, allowedChanges });
+  res.json(userUpdatedValues);
+}
+
+export {
   getById,
+  patch,
 };

@@ -50,4 +50,5 @@ async function validate({ emailToken }) {
 export {
   register,
   validate,
+  getToken,
 };
