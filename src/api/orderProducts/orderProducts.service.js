@@ -6,7 +6,16 @@ async function getProductGameTitleFromOrder({ orderId }) {
   return productGameTitleFromOrder;
 }
 
+async function log({ orderId, products }) {
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    product.orderId = orderId;
+  }
+  const res = await orderProductsRepo.log({ products });
+  return res;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getProductGameTitleFromOrder,
+  log,
 };

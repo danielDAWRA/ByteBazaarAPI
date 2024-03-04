@@ -9,7 +9,6 @@ async function getById({ id }) {
 }
 
 async function sendChangedPawssordEmail({ email }) {
-  console.log(email);
   const { EMAIL_TIMEOUT } = process.env;
   const emailToken = authService.getToken({ userId: email, timeout: EMAIL_TIMEOUT });
   const validatePath = 'http://localhost:3000/auth/validate/';
@@ -38,9 +37,6 @@ async function patch({ user, allowedChanges }) {
     const newUserProps = allowedChanges;
     newUserProps.password = hashedPassword;
     newUserProps.validated = false;
-    console.log(newUserProps);
-    console.log(email);
-
     await sendChangedPawssordEmail({ email });
     await usersRepository.patch({ _id, newUserProps });
     const checkMail = { msg: 'Pelase check your email. You need to validate your account after updating your password' };
@@ -49,8 +45,30 @@ async function patch({ user, allowedChanges }) {
   const updatedUser = await usersRepository.patch({ _id, allowedChanges });
   return updatedUser;
 }
+async function getByEmail({ email }) {
+  const user = await usersRepository.getByEmail({ email });
+  return user;
+}
+
+async function updateCredit({ user, paymentMethod, total }) {
+  const currentCredit = user[paymentMethod];
+  if (total > currentCredit) {
+    const result = {
+      msg: 'Insufficient funds.',
+      error: {
+        [paymentMethod]: currentCredit,
+      },
+    };
+    return result;
+  }
+  const updatedUserData = await usersRepository.updateCredit({ user, paymentMethod, total });
+  const updatedCredit = updatedUserData[paymentMethod];
+  return updatedCredit;
+}
 
 export {
   getById,
   patch,
+  getByEmail,
+  updateCredit,
 };

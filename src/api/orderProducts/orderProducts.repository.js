@@ -1,7 +1,7 @@
-import orderProductsModel from './orderProducts.model.js';
+import OrderProductsModel from './orderProducts.model.js';
 
 async function getProductGameTitleFromOrder({ orderId }) {
-  const productGameTitleFromOrder = await orderProductsModel
+  const productGameTitleFromOrder = await OrderProductsModel
     .findOne({ orderId })
     .populate({
       path: 'productId',
@@ -10,7 +10,12 @@ async function getProductGameTitleFromOrder({ orderId }) {
   return productGameTitleFromOrder;
 }
 
+async function log({ products }) {
+  const res = orderProductsModel.insertMany(products);
+  return res;
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getProductGameTitleFromOrder,
+  log,
 };

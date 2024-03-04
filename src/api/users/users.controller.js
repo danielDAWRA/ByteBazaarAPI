@@ -22,7 +22,19 @@ async function patch(req, res) {
   res.json(userUpdatedValues);
 }
 
+async function getByEmail(req, res) {
+  const { email } = req.params;
+  const user = await usersService.getByEmail({ email });
+  res.json(user);
+}
+
+async function getProfile(req, res) {
+  return res.json(req.user);
+}
+
 export {
   getById,
   patch,
+  getByEmail,
+  getProfile,
 };

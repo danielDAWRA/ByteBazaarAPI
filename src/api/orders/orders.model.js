@@ -10,6 +10,7 @@ const ordersSchema = new Schema({
   date: {
     type: Date,
     required: true,
+    default: Date.now,
   },
   total: {
     type: Number,
@@ -17,5 +18,5 @@ const ordersSchema = new Schema({
   },
 });
 
-const orderModel = model('order', ordersSchema);
+const orderModel = model('Order', ordersSchema);
 export default orderModel;

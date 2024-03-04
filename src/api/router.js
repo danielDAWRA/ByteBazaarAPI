@@ -18,6 +18,6 @@ router.use('/platforms', platformsRouter);
 router.use('/products', productsRouter);
 router.use('/users', usersRouter);
 
-router.use('/auth/', authRouter);
+router.use('/auth', authRouter);
 
 export default router;
