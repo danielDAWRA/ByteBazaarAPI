@@ -15,13 +15,18 @@ async function register({ user }) {
   return createdUser;
 }
 
-async function validate({ email }) {
-  const user = await UserModel.findOneAndUpdate({ email }, { validated: true });
+async function validate({ email, validated = true }) {
+  const user = await UserModel.findOneAndUpdate({ email }, { validated });
+  return user;
+}
+
+async function patch({ _id, newProps }) {
+  const user = await UserModel.findOneAndUpdate({ _id }, newProps, { new: true });
   return user;
 }
 
 async function updateCredit({ user, paymentMethod, total }) {
-  const updatedUserData = await userModel.findOneAndUpdate(
+  const updatedUserData = await UserModel.findOneAndUpdate(
     { _id: user._id },
     { $inc: { [paymentMethod]: -total } },
     { new: true },
@@ -34,5 +39,6 @@ export {
   getByEmail,
   register,
   validate,
+  patch,
   updateCredit,
 };
