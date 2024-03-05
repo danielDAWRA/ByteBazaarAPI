@@ -54,8 +54,16 @@ async function validate(req, res) {
   res.json({ msg: `${user.firstName}, your account has been confirmed.` });
 }
 
+async function modifySensitiveData(req, res) {
+  const { token } = req.params;
+  const user = await authService.modifySensitiveData({ token });
+  res.json({ msg: `Dear ${user.firstName}, your details have been successfully updated.` });
+}
+
 export {
   register,
   validate,
   login,
+  isValidEmail,
+  modifySensitiveData,
 };

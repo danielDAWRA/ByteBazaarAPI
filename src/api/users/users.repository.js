@@ -20,6 +20,15 @@ async function validate({ email, validated = true }) {
   return user;
 }
 
+async function modifySensitiveData({ _id, dataType, sensitiveData }) {
+  const user = await UserModel.findOneAndUpdate(
+    { _id },
+    { [dataType]: sensitiveData },
+    { new: true },
+  );
+  return user;
+}
+
 async function patch({ _id, newProps }) {
   const user = await UserModel.findOneAndUpdate({ _id }, newProps, { new: true });
   return user;
@@ -41,4 +50,5 @@ export {
   validate,
   patch,
   updateCredit,
+  modifySensitiveData,
 };
