@@ -11,6 +11,7 @@ function isLogged(req, res, next) {
     '/auth/login',
     '/auth/register',
     '/auth/validate',
+    '/auth/modifySensitiveData',
     '/products/',
     '/products/all',
     '/gameTitles/productId/',

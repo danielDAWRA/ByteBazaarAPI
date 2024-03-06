@@ -75,9 +75,29 @@ async function validate({ emailToken }) {
   return user;
 }
 
+async function modifySensitiveData({ token }) {
+  const { TOKEN_SECRET_WORD } = process.env;
+  const payload = jwt.verify(token, TOKEN_SECRET_WORD);
+  const { _id, dataType, sensitiveData } = payload.userId;
+  if (dataType === 'password') {
+    const intSaltOrRoundsHash = parseInt(process.env.SALT_OR_ROUNDS_HASH);
+    const hashedPassword = hashSync(sensitiveData, intSaltOrRoundsHash);
+    const user = await usersRepository.modifySensitiveData({
+      _id,
+      dataType,
+      sensitiveData: hashedPassword,
+    });
+    return user;
+  }
+  const user = await usersRepository.modifySensitiveData({ _id, dataType, sensitiveData });
+  return user;
+}
+
 export {
+  getToken,
   register,
   validate,
   login,
   isExistingUser,
+  modifySensitiveData,
 };
