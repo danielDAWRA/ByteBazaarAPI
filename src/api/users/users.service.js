@@ -50,7 +50,8 @@ async function patch({ user, newProps }) {
     });
     return;
   }
-  await usersRepository.patch({ _id, newProps });
+  const updatedUser = await usersRepository.patch({ _id, newProps });
+  return updatedUser;
 }
 
 async function getByEmail({ email }) {

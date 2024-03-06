@@ -55,8 +55,8 @@ async function patch(req, res) {
     }
     return;
   }
-  const userUpdatedValues = await usersService.patch({ user, newProps: allowedChanges });
-  res.json(userUpdatedValues);
+  const updatedUser = await usersService.patch({ user, newProps: allowedChanges });
+  res.json(updatedUser);
 }
 
 async function getByEmail(req, res) {
