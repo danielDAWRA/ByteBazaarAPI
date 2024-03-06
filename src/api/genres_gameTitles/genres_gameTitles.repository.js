@@ -2,7 +2,8 @@ import GenresGameTitleModel from './genres_gameTitles.model.js';
 
 async function getGenresByGameTitleId({ gameTitleId }) {
   const genres = await GenresGameTitleModel.find({ gameTitle_id: gameTitleId })
-    .select({ genre_id: 1, _id: 0 });
+    .select({ genre_id: 1, _id: 0 })
+    .populate('genre_id');
   return genres;
 }
 

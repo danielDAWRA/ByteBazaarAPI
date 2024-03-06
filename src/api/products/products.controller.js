@@ -1,8 +1,8 @@
 import * as productsService from './products.service.js';
 
 async function getAll(req, res) {
-  const { skip, limit } = req.query;
-  const products = await productsService.getAll({ skip, limit });
+  const { skip, limit, populateGameTitle } = req.query;
+  const products = await productsService.getAll({ skip, limit, populateGameTitle });
   res.json({ products });
 }
 
