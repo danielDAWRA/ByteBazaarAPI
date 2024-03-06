@@ -25,6 +25,10 @@ const productsSchema = new Schema({
     type: Number,
     required: true,
   },
+  genre_id: {
+    type: ObjectId,
+    ref: 'genres_gameTitles',
+  },
 });
 
 const productModel = model('Product', productsSchema);
