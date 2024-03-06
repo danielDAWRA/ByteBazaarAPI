@@ -1,11 +1,15 @@
 import * as platformsRepository from './platforms.repository.js';
 
+async function getAll() {
+  const platform = await platformsRepository.getAll();
+  return platform;
+}
 async function getById({ id }) {
   const platform = await platformsRepository.getById({ id });
   return platform;
 }
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
+  getAll,
   getById,
 };
