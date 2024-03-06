@@ -5,7 +5,7 @@ async function getAll(req, res) {
     const genres = await genresService.getAll();
     res.json(genres);
   } catch (error) {
-    console.log('estoy en el controller');
+    console.log('error');
   }
 }
 
