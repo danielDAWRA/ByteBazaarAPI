@@ -17,15 +17,24 @@ async function getAll({ skip, limit, populateGameTitle }) {
       ...product,
       genres: genresArrays[index],
     }));
-    if (genresArrays) {
-      await ProductsModel.populate(products, { path: 'genres_ids', select: 'name -id' });
-    }
+    // if (genresArrays) {
+    //   await ProductsModel.populate(products, { path: 'genres_ids', select: 'name -id' });
+    // }
   }
   return products;
 }
 
 async function getById({ id }) {
   const product = await productsRepository.getById({ id });
+
+  const gameTitleId = product.gameTitle_id;
+  const genres = await genresGameTitlesService.getGenresByGameTitleId({ gameTitleId });
+  const genresIds = genres.map((item) => item.genre_id);
+  product.genres_ids = genresIds;
+
+  if (genres && product.genres_ids.length > 0) {
+    await ProductsModel.populate(product, { path: 'genres_ids', select: 'name -_id' });
+  }
   return product;
 }
 

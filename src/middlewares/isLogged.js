@@ -11,10 +11,11 @@ function isLogged(req, res, next) {
     '/auth/login',
     '/auth/register',
     '/auth/validate',
+    '/auth/modifySensitiveData',
     '/products/',
     '/products/all',
     '/gameTitles/productId/',
-    '/genre/',
+    '/genres/',
   ];
   const isPublicRoute = publicRoutes.some((publicRoute) => req.url.startsWith(publicRoute));
   if (isPublicRoute) {
