@@ -3,6 +3,7 @@ import * as orderProductsService from '../orderProducts/orderProducts.service.js
 import * as ordersService from '../orders/orders.service.js';
 import * as genresGameTitlesService from '../genres_gameTitles/genres_gameTitles.service.js';
 import * as usersService from '../users/users.service.js';
+import ProductsModel from './products.model.js';
 
 async function getAll({ skip, limit }) {
   const products = await productsRepository.getAll({ skip, limit });
@@ -11,6 +12,15 @@ async function getAll({ skip, limit }) {
 
 async function getById({ id }) {
   const product = await productsRepository.getById({ id });
+
+  const gameTitleId = product.gameTitle_id;
+  const genres = await genresGameTitlesService.getGenresByGameTitleId({ gameTitleId });
+  const genresIds = genres.map((item) => item.genre_id);
+  product.genres_ids = genresIds;
+
+  if (genres && product.genres_ids.length > 0) {
+    await ProductsModel.populate(product, { path: 'genres_ids', select: 'name -_id' });
+  }
   return product;
 }
 

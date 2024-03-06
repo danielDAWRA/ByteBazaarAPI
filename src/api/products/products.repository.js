@@ -14,7 +14,11 @@ async function getAll({ skip, limit }) {
 }
 
 async function getById({ id }) {
-  const product = await ProductsModel.findById(id).lean();
+  const product = await ProductsModel
+    .findById(id)
+    .populate({ path: 'gameTitle_id' })
+    .populate({ path: 'platform_id', select: '-_id' })
+    .lean();
   return product;
 }
 

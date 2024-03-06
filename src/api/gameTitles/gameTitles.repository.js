@@ -11,7 +11,6 @@ async function getAll() {
 }
 
 async function getByProductId({ gameTitleId }) {
-  console.log('l14:', gameTitleId);
   const gameTitle = await GameTitleModel.findById(gameTitleId).lean();
   return gameTitle;
 }

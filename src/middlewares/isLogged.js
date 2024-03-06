@@ -15,7 +15,7 @@ function isLogged(req, res, next) {
     '/products/',
     '/products/all',
     '/gameTitles/productId/',
-    '/genre/',
+    '/genres/',
   ];
   const isPublicRoute = publicRoutes.some((publicRoute) => req.url.startsWith(publicRoute));
   if (isPublicRoute) {
