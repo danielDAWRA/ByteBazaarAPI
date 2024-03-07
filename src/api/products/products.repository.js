@@ -4,7 +4,7 @@ async function getAll({ skip, limit }) {
   const products = await ProductsModel
     .find({})
     .select('stock price')
-    .populate({ path: 'gameTitle_id', select: '-_id -description' })
+    .populate({ path: 'gameTitle_id', select: ' -description' })
     .populate({ path: 'platform_id', select: '-_id' })
     .sort({ listedDate: -1 })
     .skip(skip)
@@ -14,7 +14,11 @@ async function getAll({ skip, limit }) {
 }
 
 async function getById({ id }) {
-  const product = await ProductsModel.findById(id).lean();
+  const product = await ProductsModel
+    .findById(id)
+    .populate({ path: 'gameTitle_id' })
+    .populate({ path: 'platform_id', select: '-_id' })
+    .lean();
   return product;
 }
 

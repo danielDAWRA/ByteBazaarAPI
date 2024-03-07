@@ -1,8 +1,12 @@
 import * as genresService from './genres.service.js';
 
 async function getAll(req, res) {
-  const genres = await genresService.getAll();
-  res.json(genres);
+  try {
+    const genres = await genresService.getAll();
+    res.json(genres);
+  } catch (error) {
+    console.log('error');
+  }
 }
 
 async function getById(req, res) {

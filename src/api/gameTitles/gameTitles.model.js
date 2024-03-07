@@ -12,6 +12,7 @@ const gameTitlesSchema = new Schema({
   image: {
     type: String,
   },
+
 });
 
 const gameTitleModel = model('GameTitle', gameTitlesSchema, 'gameTitles');

@@ -13,6 +13,10 @@ const productsSchema = new Schema({
     required: true,
     ref: 'Platform',
   },
+  genres_ids: [{
+    type: ObjectId,
+    ref: 'Genre',
+  }],
   stock: {
     type: Number,
     required: true,
@@ -24,6 +28,10 @@ const productsSchema = new Schema({
   price: {
     type: Number,
     required: true,
+  },
+  genre_id: {
+    type: ObjectId,
+    ref: 'genres_gameTitles',
   },
 });
 

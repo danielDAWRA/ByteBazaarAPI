@@ -15,7 +15,6 @@ async function getAll() {
 
 async function getByProductId(productId) {
   const product = await productsService.getById({ id: productId });
-  console.log(product);
   const gameTitles = await gameTitlesRepository.getByProductId({ gameTitleId: product.gameTitle_id });
   return gameTitles;
 }
