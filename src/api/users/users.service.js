@@ -21,36 +21,42 @@ async function sendModificationConfirmation({
   });
   const url = `${SERVER_URL}auth/modifySensitiveData/${token}`;
   // const url = `http://localhost:3000/auth/modifySensitiveData/${token}`;
-  await transporter.sendMail({
+  const output = await transporter.sendMail({
     to: dataType === 'email' ? sensitiveData : email,
     subject: 'Confirm details change',
     html: `<h3>You're almost there!</h3><br><a href=${url}>Click this link to confirm changes to your account.</a>`,
   });
+  if (output.rejected.length) {
+    return false;
+  }
+  return true;
 }
 
 async function patch({ user, newProps }) {
   const { _id } = user;
   if (newProps.email) {
-    sendModificationConfirmation({ _id, dataType: 'email', sensitiveData: newProps.email });
-    return;
+    const result = sendModificationConfirmation({ _id, dataType: 'email', sensitiveData: newProps.email });
+    return result;
   }
   if (newProps.newPassword) {
     if (!compareSync(newProps.password, user.password)) {
-      const passwordError = {
+      const result = {};
+      result.error = {
         code: 401,
         msg: 'The current password you entered does not match our records.',
       };
-      throw new Error(JSON.stringify(passwordError));
+      return result;
     }
-    sendModificationConfirmation({
+    const result = sendModificationConfirmation({
       _id,
       dataType: 'password',
       sensitiveData: newProps.newPassword,
       email: user.email,
     });
-    return;
+    return result;
   }
-  await usersRepository.patch({ _id, newProps });
+  const updatedUser = await usersRepository.patch({ _id, newProps });
+  return updatedUser;
 }
 
 async function getByEmail({ email }) {

@@ -30,7 +30,11 @@ async function patch(req, res) {
       res.json({ msg: 'The email address you have entered is already associated with an account' });
       return;
     }
-    await usersService.patch({ user, newProps: allowedChanges });
+    const result = await usersService.patch({ user, newProps: allowedChanges });
+    if (!result) {
+      res.status(500);
+      res.json({ msg: 'We were unable to send an email to the account you provided; please check the details are correct.' });
+    }
     res.json({ msg: `We have just sent an email to ${allowedChanges.email}. You must click on the link in the email in order to update your email address.` });
     return;
   }
@@ -45,18 +49,21 @@ async function patch(req, res) {
       res.json({ msg: 'Both passwords must match.' });
       return;
     }
-    try {
-      await usersService.patch({ user, newProps: allowedChanges });
-      res.json({ msg: `We have just sent an email to ${user.email}. You must click on the link in the email in order to update your password.` });
-    } catch (error) {
-      const myError = JSON.parse(error.message);
-      res.status(myError.code);
-      res.json({ msg: myError.msg });
+    const result = await usersService.patch({ user, newProps: allowedChanges });
+    if (!result) {
+      res.status(500);
+      res.json({ msg: 'We were unable to send an email to the account you provided; please check the details are correct.' });
     }
+    if (result.error) {
+      const { code, msg } = result.error;
+      res.status(code);
+      res.json({ msg });
+    }
+    res.json({ msg: `We have just sent an email to ${user.email}. You must click on the link in the email in order to update your password.` });
     return;
   }
-  const userUpdatedValues = await usersService.patch({ user, newProps: allowedChanges });
-  res.json(userUpdatedValues);
+  const updatedUser = await usersService.patch({ user, newProps: allowedChanges });
+  res.json(updatedUser);
 }
 
 async function getByEmail(req, res) {

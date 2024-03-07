@@ -30,8 +30,8 @@ async function modifySensitiveData({ _id, dataType, sensitiveData }) {
 }
 
 async function patch({ _id, newProps }) {
-  const user = await UserModel.findOneAndUpdate({ _id }, newProps, { new: true });
-  return user;
+  const updatedUser = await UserModel.findOneAndUpdate({ _id }, newProps, { new: true });
+  return updatedUser;
 }
 
 async function updateCredit({ user, paymentMethod, total }) {
