@@ -27,7 +27,7 @@ async function patch(req, res) {
     const existingUser = await isExistingUser({ email: allowedChanges.email });
     if (existingUser) {
       res.status(400);
-      res.json({ msg: 'The email address you have entered is already associated with an account' });
+      res.json({ msg: 'The email address you have entered is already associated with an account.' });
       return;
     }
     const result = await usersService.patch({ user, newProps: allowedChanges });
@@ -38,7 +38,13 @@ async function patch(req, res) {
     res.json({ msg: `We have just sent an email to ${allowedChanges.email}. You must click on the link in the email in order to update your email address.` });
     return;
   }
-  if (allowedChanges.newPassword) {
+  if (allowedChanges.password
+    && !(allowedChanges.newPassword || allowedChanges.repeatedNewPassword)) {
+    res.status(400);
+    res.json({ msg: 'Please enter a new password in order to begin the process of changing your password.' });
+    return;
+  }
+  if (allowedChanges.newPassword || allowedChanges.repeatedNewPassword) {
     if (!allowedChanges.password) {
       res.status(400);
       res.json({ msg: 'You must enter your current password to allow password modifications.' });
