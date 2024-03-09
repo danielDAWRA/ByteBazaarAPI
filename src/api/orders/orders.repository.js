@@ -9,7 +9,7 @@ async function getOrdersByUserId({ userId }) {
 }
 
 async function log({ userId, total }) {
-  const order = await ordersModel.create({ user_id: userId, total });
+  const order = await OrdersModel.create({ user_id: userId, total });
   const { _id } = order;
   return _id;
 }
