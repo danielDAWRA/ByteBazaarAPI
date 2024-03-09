@@ -18,8 +18,14 @@ function isLogged(req, res, next) {
     '/genres/',
     '/platforms',
   ];
+  const privateRoutes = [
+    '/products/buy',
+  ];
+
   const isPublicRoute = publicRoutes.some((publicRoute) => req.url.startsWith(publicRoute));
-  if (isPublicRoute) {
+  const isPrivateRoute = privateRoutes.some((privateRoute) => req.url.startsWith(privateRoute));
+
+  if (isPublicRoute && !isPrivateRoute) {
     next();
     return;
   }

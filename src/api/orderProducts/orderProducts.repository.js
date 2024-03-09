@@ -11,7 +11,7 @@ async function getProductGameTitleFromOrder({ orderId }) {
 }
 
 async function log({ products }) {
-  const res = orderProductsModel.insertMany(products);
+  const res = OrderProductsModel.insertMany(products);
   return res;
 }
 
